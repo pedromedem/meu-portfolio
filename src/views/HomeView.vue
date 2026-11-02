@@ -164,38 +164,6 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   border: 3px solid #fafaf9;
 }
 
-.btn-primary,
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  padding: 0.7rem 1.3rem;
-  font-weight: 700;
-  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-}
-
-.btn-primary {
-  background: #171717;
-  color: #fafaf9;
-}
-
-.btn-ghost {
-  border: 1px solid rgba(23, 23, 23, 0.18);
-  color: inherit;
-}
-
-.btn-primary:hover,
-.btn-ghost:hover {
-  transform: translateY(-1px);
-}
-
-.btn-primary:focus-visible,
-.btn-ghost:focus-visible {
-  outline: 2px solid #8b5cf6;
-  outline-offset: 3px;
-}
-
 @keyframes spin-ring {
   to {
     --angle: 360deg;
@@ -222,8 +190,6 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 @media (prefers-reduced-motion: reduce) {
   .avatar-ring,
   .profile-card,
-  .btn-primary,
-  .btn-ghost,
   .profile-card__glare {
     animation: none;
     transition: none;
@@ -250,14 +216,5 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
 .dark .avatar-ring__photo {
   border-color: #171717;
-}
-
-.dark .btn-primary {
-  background: #fafaf9;
-  color: #171717;
-}
-
-.dark .btn-ghost {
-  border-color: rgba(255, 255, 255, 0.2);
 }
 </style>

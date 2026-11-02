@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
     aria-label="Back to top"
     :aria-hidden="scroll ? undefined : true"
     :tabindex="scroll ? 0 : -1"
-    class="fixed bottom-10 right-6 z-40 h-12 w-12 rounded-full border border-black bg-white/70 backdrop-blur-sm transition duration-500 ease-in-out hover:scale-110 dark:border-[#BBBBBB] dark:bg-neutral-900/70 md:right-10"
+    class="icon-btn fixed bottom-10 right-6 z-40 h-12 w-12 bg-white/80 shadow-[0_16px_40px_-24px_rgba(40,10,60,0.8)] backdrop-blur-md transition duration-500 ease-in-out dark:bg-neutral-900/80 md:right-10"
     :class="scroll ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'"
     @click="toTop"
   >

@@ -1,7 +1,11 @@
 <template>
-  <main class="flex flex-col items-center justify-center gap-4 px-6 text-center dark:text-neutral-200">
-    <p class="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500">404</p>
-    <h1 class="text-3xl font-black text-neutral-950 dark:text-neutral-50 md:text-5xl">This page does not exist.</h1>
-    <router-link to="/" class="mt-2 font-semibold underline">Back home</router-link>
+  <main class="flex items-center justify-center px-4 py-6">
+    <section class="surface w-full max-w-lg px-8 py-12 text-center">
+      <p class="eyebrow">404</p>
+      <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 md:text-5xl">
+        This page does not exist.
+      </h1>
+      <router-link to="/" class="btn-primary mt-8">Back home</router-link>
+    </section>
   </main>
 </template>

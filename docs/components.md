@@ -16,8 +16,8 @@ The home card tilts a few degrees with the pointer. The listener lives on the ca
 Technologies render twice so the track can loop. The second copy is `aria-hidden` and removed from the tab order. Icon paths are absolute (`/vue.svg`), so they keep working on `/about`.
 
 ```vue
-<scrollComponent v-for="tech in techs" :key="tech" :tech="tech" />
-<scrollComponent v-for="tech in techs" :key="`${tech}-copy`" :tech="tech" duplicate />
+<scrollComponent v-for="tech in techs" :key="tech.name" :name="tech.name" :label="tech.label" />
+<scrollComponent v-for="tech in techs" :key="`${tech.name}-copy`" :name="tech.name" :label="tech.label" duplicate />
 ```
 
 ## Projects Page

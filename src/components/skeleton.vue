@@ -1,9 +1,10 @@
 <template>
-  <div class="h-[475px] animate-pulse rounded-3xl bg-neutral-300 dark:bg-neutral-800" aria-hidden="true">
-    <div class="h-2/4 w-full rounded-t-3xl bg-neutral-200 dark:bg-neutral-700">
+  <div class="overflow-hidden rounded-[28px] border border-black/5 bg-white dark:border-white/15 dark:bg-[#2a2a2a]" aria-hidden="true">
+    <div class="aspect-[16/10] animate-pulse bg-neutral-200 dark:bg-neutral-700"></div>
+    <div class="space-y-3 px-5 py-5">
+      <div class="h-4 w-2/3 animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+      <div class="h-3 w-full animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
+      <div class="h-3 w-4/5 animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-700"></div>
     </div>
-    <div class="m-4 h-3 bg-neutral-200 dark:bg-neutral-700"></div>
-    <div class="m-4 h-3 bg-neutral-200 dark:bg-neutral-700"></div>
-    <div class="mx-4 mt-20 h-3 bg-neutral-200 dark:bg-neutral-700"></div>
   </div>
 </template>

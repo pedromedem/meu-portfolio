@@ -28,13 +28,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <div class="flex h-full items-center gap-3 rounded-[14px] border border-gray-500/20 bg-white/40 px-3 text-[#333] backdrop-blur-sm dark:bg-[rgba(18,17,19,.4)] dark:text-neutral-200">
+    <div class="flex h-full items-center gap-4 rounded-full border border-black/10 bg-white/70 px-4 text-sm font-medium text-neutral-800 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/50 dark:text-neutral-100">
       <router-link class="element relative after:bg-[#333] dark:after:bg-neutral-50" to="/">Home</router-link>
       <router-link class="element relative after:bg-[#333] dark:after:bg-neutral-50" to="/about">About</router-link>
       <router-link class="element relative after:bg-[#333] dark:after:bg-neutral-50" to="/projects">Projects</router-link>
       <button
         type="button"
-        class="border-l border-[#333] pl-2 transition dark:border-neutral-200"
+        class="border-l border-neutral-300 pl-3 transition dark:border-white/20"
         :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
         :aria-pressed="isDark"
         @click="toggleTheme"

@@ -45,33 +45,46 @@ onMounted(loadProjects)
 </script>
 
 <template>
-  <main class="flex flex-col px-4 dark:text-neutral-300 md:px-14">
-    <div class="mb-10 flex flex-col justify-center">
-      <h1 class="p-4 text-center text-xl font-black md:text-4xl">Main Projects</h1>
-      <p class="self-center italic md:text-lg">All projects listed here are updated via the <a
-          href="https://docs.github.com/pt/rest/quickstart?apiVersion=2022-11-28" class="underline" target="_blank"
-          rel="noopener noreferrer">GitHub
-          API</a>.</p>
-    </div>
+  <main class="mx-auto flex w-full max-w-6xl flex-col px-4 py-6 sm:px-6 md:py-10">
+    <header class="mx-auto mb-10 max-w-2xl text-center">
+      <p class="eyebrow">Work</p>
+      <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
+        Main Projects
+      </h1>
+      <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
+        All projects listed here are updated via the
+        <a
+          href="https://docs.github.com/pt/rest/quickstart?apiVersion=2022-11-28"
+          class="font-semibold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
+          target="_blank"
+          rel="noopener noreferrer"
+        >GitHub API</a>.
+      </p>
+    </header>
+
     <section>
-      <div v-if="state.erro">
-        <p class="text-center">Sorry, no data available at the moment.
-        </p>
+      <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">
+        <p class="text-neutral-600 dark:text-neutral-300">Sorry, no data available at the moment.</p>
       </div>
-      <div v-else-if="state.loading">
-        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <skeleton />
-          <skeleton />
-          <skeleton />
-        </div>
+      <div v-else-if="state.loading" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <skeleton />
+        <skeleton />
+        <skeleton />
       </div>
-      <div v-else-if="projects.length > 0" class="columns-1 gap-8 sm:columns-2 lg:columns-3">
-        <projectCard class="mb-6 break-inside-avoid" v-for="repo in projects" :key="repo.id" :name="repo.name"
-          :description="repo.description" :language="repo.language" :homepage="repo.homepage" :html_url="repo.html_url"
-          :topics="repo.topics" />
+      <div v-else-if="projects.length > 0" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <projectCard
+          v-for="repo in projects"
+          :key="repo.id"
+          :name="repo.name"
+          :description="repo.description"
+          :language="repo.language"
+          :homepage="repo.homepage"
+          :html_url="repo.html_url"
+          :topics="repo.topics"
+        />
       </div>
-      <div v-else>
-        <p class="text-center">No projects to show yet.</p>
+      <div v-else class="surface mx-auto max-w-xl px-6 py-10 text-center">
+        <p class="text-neutral-600 dark:text-neutral-300">No projects to show yet.</p>
       </div>
     </section>
   </main>
