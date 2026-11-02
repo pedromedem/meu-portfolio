@@ -1,24 +1,38 @@
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-let scroll = ref(false)
+const scroll = ref(false)
 
 const scrolling = () => {
-  document.body.scrollTop > 20 || document.documentElement.scrollTop > 20 ? scroll.value = true : scroll.value = false
+  scroll.value = document.documentElement.scrollTop > 20 || document.body.scrollTop > 20
 }
-
-window.onscroll = () => scrolling()
 
 const toTop = () => {
-  document.documentElement.scrollTop = 0
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
 }
 
+onMounted(() => {
+  scrolling()
+  window.addEventListener('scroll', scrolling, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', scrolling)
+})
 </script>
 
 <template>
-  <button @click="toTop()"
-    class="duration-500 ease-in-out border border-black rounded-full w-12 fixed bottom-10  backdrop-blur-sm hover:scale-110 dark:border-[#BBBBBB]" :class="scroll ? 'left-[80%] md:left-[90%] xl:left-[95%]' : 'left-[105%]'">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <button
+    type="button"
+    aria-label="Back to top"
+    :aria-hidden="scroll ? undefined : true"
+    :tabindex="scroll ? 0 : -1"
+    class="fixed bottom-10 right-6 z-40 h-12 w-12 rounded-full border border-black bg-white/70 backdrop-blur-sm transition duration-500 ease-in-out hover:scale-110 dark:border-[#BBBBBB] dark:bg-neutral-900/70 md:right-10"
+    :class="scroll ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'"
+    @click="toTop"
+  >
+    <svg class="mx-auto h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#333" class="dark:stroke-neutral-300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </button>
