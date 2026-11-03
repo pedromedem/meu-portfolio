@@ -1,13 +1,49 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const isDark = ref(document.documentElement.classList.contains('dark'))
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark', isDark.value)
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+const applyTheme = (dark) => {
+  isDark.value = dark
+  document.documentElement.classList.toggle('dark', dark)
+  localStorage.setItem('theme', dark ? 'dark' : 'light')
+  return nextTick()
+}
+
+const toggleTheme = (event) => {
+  const next = !isDark.value
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reveal = !reduce && typeof document.startViewTransition === 'function'
+
+  if (!reveal) {
+    applyTheme(next)
+    return
+  }
+
+  const x = event.clientX
+  const y = event.clientY
+  const endRadius = Math.hypot(
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y)
+  )
+
+  const transition = document.startViewTransition(() => applyTheme(next))
+  transition.ready.then(() => {
+    document.documentElement.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${endRadius}px at ${x}px ${y}px)`,
+        ],
+      },
+      {
+        duration: 560,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        pseudoElement: '::view-transition-new(root)',
+      }
+    )
+  }).catch(() => {})
 }
 
 const onSchemeChange = (event) => {
@@ -34,12 +70,20 @@ onBeforeUnmount(() => {
       <router-link class="element relative after:bg-[#333] dark:after:bg-neutral-50" to="/projects">Projects</router-link>
       <button
         type="button"
-        class="border-l border-neutral-300 pl-3 transition dark:border-white/20"
+        class="theme-toggle"
         :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
         :aria-pressed="isDark"
         @click="toggleTheme"
       >
-        <img width="19" height="19" :src="isDark ? '/sun.svg' : '/moon.svg'" alt="">
+        <span class="theme-toggle__icons" :class="{ 'is-dark': isDark }" aria-hidden="true">
+          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none">
+            <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+          </svg>
+          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" />
+            <path d="M12 3v1.8M12 19.2V21M3 12h1.8M19.2 12H21M5.6 5.6l1.3 1.3M17.1 17.1l1.3 1.3M18.4 5.6l-1.3 1.3M6.9 17.1l-1.3 1.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
       </button>
     </div>
   </div>
@@ -60,5 +104,70 @@ onBeforeUnmount(() => {
 .element:hover::after,
 a.router-link-active::after {
   transform: scaleX(1);
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.15rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(23, 23, 23, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: #171717;
+  transition: background-color 0.45s ease, border-color 0.45s ease, color 0.45s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+.theme-toggle__icons {
+  display: grid;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.theme-toggle__icons svg {
+  grid-area: 1 / 1;
+  width: 1.05rem;
+  height: 1.05rem;
+  transition: opacity 0.45s ease, transform 0.5s ease;
+}
+
+.theme-toggle__sun {
+  opacity: 0;
+  transform: rotate(-70deg) scale(0.7);
+}
+
+.theme-toggle__icons.is-dark .theme-toggle__moon {
+  opacity: 0;
+  transform: rotate(70deg) scale(0.7);
+}
+
+.theme-toggle__icons.is-dark .theme-toggle__sun {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle,
+  .theme-toggle__icons svg {
+    transition: none;
+  }
+}
+</style>
+
+<style>
+.dark .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fafaf9;
 }
 </style>

@@ -4,6 +4,25 @@
 
 :root {
   -webkit-tap-highlight-color: transparent;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: #f5f5f4;
+}
+
+html.dark body {
+  background: #171717;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 img {

@@ -5,7 +5,7 @@
 ## Main Page
 
 ### Profile card
-The home card follows the pointer from the center of the window, using the same rotation direction as the first version. The listener is removed when the view unmounts. Touch and `prefers-reduced-motion` skip the tilt.
+The home card tilts only while a mouse or pen is over it, and eases back when the pointer leaves. Touch and `prefers-reduced-motion` skip the tilt. The theme button crossfades the moon and the sun, and the page reveals the new theme from that button.
 
 ### Back to top
 `floatingbutton.vue` listens to `window` `scroll` while it is mounted and removes that listener on unmount. The button stays out of the tab order until the page has scrolled.
