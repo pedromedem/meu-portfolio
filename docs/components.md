@@ -5,7 +5,7 @@
 ## Main Page
 
 ### Profile card
-The home card tilts a few degrees with the pointer. The listener lives on the card, uses `requestAnimationFrame`, and is cancelled when the view unmounts. Touch and `prefers-reduced-motion` skip the tilt.
+The home card follows the pointer from the center of the window, using the same rotation direction as the first version. The listener is removed when the view unmounts. Touch and `prefers-reduced-motion` skip the tilt.
 
 ### Back to top
 `floatingbutton.vue` listens to `window` `scroll` while it is mounted and removes that listener on unmount. The button stays out of the tab order until the page has scrolled.

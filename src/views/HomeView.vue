@@ -1,52 +1,48 @@
 <script setup>
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const card = ref(null)
 let frame = 0
 
-const canTilt = () =>
-  window.matchMedia('(pointer: fine)').matches &&
-  !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const isMobile = () => /Mobi|Android/i.test(navigator.userAgent)
 
-const onPointerMove = (event) => {
+const handleMouse = (event) => {
   const el = card.value
-  if (!el || !canTilt()) return
+  if (!el) return
 
-  const rect = el.getBoundingClientRect()
-  const px = (event.clientX - rect.left) / rect.width
-  const py = (event.clientY - rect.top) / rect.height
+  const mouseX = event.clientX
+  const mouseY = event.clientY
+  const centerX = window.innerWidth / 2
+  const centerY = window.innerHeight / 2
+  const deltaX = mouseX - centerX
+  const deltaY = mouseY - centerY
+  const angleX = (deltaY / centerY) * 22
+  const angleY = (-deltaX / centerX) * 22
 
   cancelAnimationFrame(frame)
   frame = requestAnimationFrame(() => {
-    const rotateX = (0.5 - py) * 9
-    const rotateY = (px - 0.5) * 11
-    el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-    el.style.setProperty('--mx', `${px * 100}%`)
-    el.style.setProperty('--my', `${py * 100}%`)
-    el.classList.add('is-tilting')
+    el.style.transform = `rotate3d(1, 0, 0, ${angleX}deg) rotate3d(0, 1, 0, ${angleY}deg)`
+    const rect = el.getBoundingClientRect()
+    el.style.setProperty('--mx', `${((mouseX - rect.left) / rect.width) * 100}%`)
+    el.style.setProperty('--my', `${((mouseY - rect.top) / rect.height) * 100}%`)
   })
 }
 
-const resetTilt = () => {
-  const el = card.value
-  if (!el) return
-  cancelAnimationFrame(frame)
-  el.classList.remove('is-tilting')
-  el.style.transform = 'rotateX(0deg) rotateY(0deg)'
-}
+onMounted(() => {
+  if (isMobile() || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  window.addEventListener('mousemove', handleMouse)
+})
 
-onBeforeUnmount(() => cancelAnimationFrame(frame))
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', handleMouse)
+  cancelAnimationFrame(frame)
+})
 </script>
 
 <template>
   <main class="flex items-center justify-center px-4 py-6 sm:px-8">
     <div class="scene w-full max-w-3xl">
-      <article
-        ref="card"
-        class="profile-card"
-        @pointermove="onPointerMove"
-        @pointerleave="resetTilt"
-      >
+      <article ref="card" class="profile-card">
         <div class="profile-card__glow profile-card__glow--pink" aria-hidden="true" />
         <div class="profile-card__glow profile-card__glow--violet" aria-hidden="true" />
         <div class="profile-card__glare" aria-hidden="true" />
@@ -99,16 +95,11 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   border-radius: 32px;
   padding: 1.75rem;
   transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(250, 250, 249, 0.9));
   border: 1px solid rgba(15, 15, 15, 0.08);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.75) inset,
     0 30px 70px -36px rgba(40, 10, 60, 0.45);
-}
-
-.profile-card.is-tilting {
-  transition: transform 0.12s linear;
 }
 
 .profile-card__glow {
@@ -137,12 +128,6 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   inset: 0;
   pointer-events: none;
   background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.42), transparent 42%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.profile-card.is-tilting .profile-card__glare {
-  opacity: 1;
 }
 
 .avatar-ring {
