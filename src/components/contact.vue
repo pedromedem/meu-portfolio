@@ -3,7 +3,7 @@ import GithubIcon from './GithubIcon.vue'
 </script>
 
 <template>
-  <section class="surface flex h-full flex-col justify-between px-6 py-8 sm:px-8">
+  <section class="surface flex h-full flex-col justify-between px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
     <div>
       <p class="eyebrow">Contact</p>
       <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
@@ -11,7 +11,7 @@ import GithubIcon from './GithubIcon.vue'
         Feel free to reach out to me through GitHub or Linkedin. Thank you for visiting my portfolio, and I look forward to sharing my programming journey with you!
       </p>
     </div>
-    <div class="mt-8 flex flex-col items-start gap-4">
+    <div class="mt-10 flex flex-col items-start gap-5">
       <a class="btn-ghost" href="mailto:ssilvalucas2004@gmail.com?subject=Olá, vi seu portfólio">ssilvalucas2004@gmail.com</a>
       <div class="flex items-center gap-3">
         <a href="https://github.com/pedromedem" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="GitHub">
