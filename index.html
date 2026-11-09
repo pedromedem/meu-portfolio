@@ -23,6 +23,7 @@
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
           var dark = stored ? stored === 'dark' : prefersDark
           document.documentElement.classList.toggle('dark', dark)
+          document.documentElement.lang = localStorage.getItem('locale') === 'pt' ? 'pt-BR' : 'en'
         } catch (e) {}
       })()
     </script>

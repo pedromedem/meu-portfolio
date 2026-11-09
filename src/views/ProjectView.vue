@@ -2,6 +2,9 @@
 import { computed, onMounted, reactive } from 'vue'
 import projectCard from '../components/projectCard.vue'
 import skeleton from '../components/skeleton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const state = reactive({
   projects: [],
@@ -47,24 +50,24 @@ onMounted(loadProjects)
 <template>
   <main class="mx-auto flex w-full max-w-6xl flex-col px-4 py-6 sm:px-6 md:py-10">
     <header class="mx-auto mb-10 max-w-2xl text-center">
-      <p class="eyebrow">Work</p>
+      <p class="eyebrow">{{ t('projects.kicker') }}</p>
       <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
-        Main Projects
+        {{ t('projects.title') }}
       </h1>
       <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
-        All projects listed here are updated via the
+        {{ t('projects.before') }}
         <a
           href="https://docs.github.com/pt/rest/quickstart?apiVersion=2022-11-28"
           class="font-semibold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
           target="_blank"
           rel="noopener noreferrer"
-        >GitHub API</a>.
+        >{{ t('projects.api') }}</a>.
       </p>
     </header>
 
     <section>
       <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">
-        <p class="text-neutral-600 dark:text-neutral-300">Sorry, no data available at the moment.</p>
+        <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
       </div>
       <div v-else-if="state.loading" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
         <skeleton />
@@ -84,7 +87,7 @@ onMounted(loadProjects)
         />
       </div>
       <div v-else class="surface mx-auto max-w-xl px-6 py-10 text-center">
-        <p class="text-neutral-600 dark:text-neutral-300">No projects to show yet.</p>
+        <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.empty') }}</p>
       </div>
     </section>
   </main>

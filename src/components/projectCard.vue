@@ -1,6 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue'
 import GithubIcon from './GithubIcon.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   name: { type: String, default: '' },
@@ -56,7 +59,7 @@ const screenshot = computed(() => {
         :href="liveUrl"
         target="_blank"
         rel="noopener noreferrer"
-        :aria-label="`Open ${title}`"
+        :aria-label="`${t('card.open')} ${title}`"
       />
     </div>
 
@@ -85,7 +88,7 @@ const screenshot = computed(() => {
           :href="repoUrl"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Open GitHub repository"
+          :aria-label="t('card.repo')"
         >
           <GithubIcon :size="18" />
         </a>
@@ -95,7 +98,7 @@ const screenshot = computed(() => {
           :href="liveUrl"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Open live site"
+          :aria-label="t('card.live')"
         >
           <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
             stroke-linejoin="round" height="18" width="18" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">

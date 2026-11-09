@@ -1,14 +1,17 @@
 <script setup>
 import GithubIcon from './GithubIcon.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="surface flex h-full flex-col justify-between px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
     <div>
-      <p class="eyebrow">Contact</p>
+      <p class="eyebrow">{{ t('contact.kicker') }}</p>
       <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
-        <strong class="font-semibold text-neutral-950 dark:text-neutral-50">I am open to collaboration, learning opportunities, and sharing experiences</strong>.
-        Feel free to reach out to me through GitHub or Linkedin. Thank you for visiting my portfolio, and I look forward to sharing my programming journey with you!
+        <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('contact.lead') }}</strong>.
+        {{ t('contact.body') }}
       </p>
     </div>
     <div class="mt-10 flex flex-col items-start gap-5">

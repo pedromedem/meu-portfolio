@@ -1,5 +1,8 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const scroll = ref(false)
 
@@ -25,7 +28,7 @@ onBeforeUnmount(() => {
 <template>
   <button
     type="button"
-    aria-label="Back to top"
+    :aria-label="t('top')"
     :aria-hidden="scroll ? undefined : true"
     :tabindex="scroll ? 0 : -1"
     class="icon-btn fixed bottom-10 right-6 z-40 h-12 w-12 bg-white/80 shadow-[0_16px_40px_-24px_rgba(40,10,60,0.8)] backdrop-blur-md transition duration-500 ease-in-out dark:bg-neutral-900/80 md:right-10"

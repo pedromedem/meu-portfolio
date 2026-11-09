@@ -1,5 +1,8 @@
 <script setup>
 import { onBeforeUnmount, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const card = ref(null)
 let frame = 0
@@ -61,7 +64,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
             <img
               class="avatar-ring__photo"
               src="https://avatars.githubusercontent.com/u/103083001?v=4"
-              alt="Portrait of Lucas"
+              :alt="t('home.portrait')"
               width="156"
               height="156"
             />
@@ -69,22 +72,22 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
           <div class="flex min-w-0 flex-col items-center text-center md:items-start md:text-left">
             <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-neutral-500 dark:text-neutral-400">
-              Front-end developer
+              {{ t('home.role') }}
             </p>
             <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
-              Hi, my name is Lucas.
+              {{ t('home.hello') }}
             </h1>
             <p class="mt-4 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
-              Passionate about
-              <span class="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text font-semibold text-transparent">creating intuitive user experiences</span>.
-              Always seeking new challenges and ways to improve my skills. Here you will find some projects and learn a little about me.
+              {{ t('home.before') }}
+              <span class="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text font-semibold text-transparent">{{ t('home.em') }}</span>.
+              {{ t('home.after') }}
             </p>
             <p class="mt-4 text-sm font-medium tracking-wide text-neutral-500 dark:text-neutral-400">
               JavaScript · Vue · Tailwind
             </p>
             <div class="mt-6 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              <router-link to="/about" class="btn-primary">Enjoy</router-link>
-              <router-link to="/projects" class="btn-ghost">Projects</router-link>
+              <router-link to="/about" class="btn-primary">{{ t('home.enjoy') }}</router-link>
+              <router-link to="/projects" class="btn-ghost">{{ t('nav.projects') }}</router-link>
             </div>
           </div>
         </div>
