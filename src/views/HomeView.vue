@@ -71,7 +71,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
           </div>
 
           <div class="flex min-w-0 flex-col items-center text-center md:items-start md:text-left">
-            <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-neutral-500 dark:text-neutral-400">
+            <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400 sm:text-[0.72rem] sm:tracking-[0.28em]">
               {{ t('home.role') }}
             </p>
             <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
