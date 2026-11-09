@@ -10,6 +10,19 @@ const props = defineProps({
 const searchUrl = computed(
   () => `https://www.google.com/search?q=${encodeURIComponent(props.label || props.name)}`
 )
+
+const tones = {
+  HTML5: 'text-[#e34f26] dark:text-[#ff9a76]',
+  CSS3: 'text-[#1572b6] dark:text-[#79c0ff]',
+  JavaScript: 'text-[#c6a000] dark:text-[#f7df1e]',
+  vue: 'text-[#3aa776] dark:text-[#6eebc0]',
+  react: 'text-[#087ea4] dark:text-[#61dafb]',
+  tailwind: 'text-[#0ea5e9] dark:text-[#7dd3fc]',
+  mySQL: 'text-[#00758f] dark:text-[#5ed0ea]',
+  git: 'text-[#e24329] dark:text-[#ff8f73]',
+}
+
+const tone = computed(() => tones[props.name] || 'text-neutral-900 dark:text-neutral-100')
 </script>
 
 <template>
@@ -22,12 +35,30 @@ const searchUrl = computed(
     :tabindex="duplicate ? -1 : undefined"
     :aria-hidden="duplicate ? 'true' : undefined"
   >
-    <img class="h-5 w-5" :src="`/${name}.svg`" :alt="duplicate ? '' : `${label || name} logo`">
+    <span
+      class="tech-icon"
+      :class="tone"
+      :style="{ maskImage: `url(/${name}.svg)`, WebkitMaskImage: `url(/${name}.svg)` }"
+      aria-hidden="true"
+    />
     <span class="text-sm font-semibold">{{ label || name }}</span>
   </a>
 </template>
 
 <style scoped>
+.tech-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tech-chip--clone {
     display: none;
