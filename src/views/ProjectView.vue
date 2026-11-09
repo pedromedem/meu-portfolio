@@ -1,10 +1,13 @@
 <script setup>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, nextTick, onMounted, reactive } from 'vue'
+import { useRoute } from 'vue-router'
 import projectCard from '../components/projectCard.vue'
 import skeleton from '../components/skeleton.vue'
+import { featured, featuredNames } from '../content/projects'
 import { useI18n } from '../i18n'
 
 const { t } = useI18n()
+const route = useRoute()
 
 const state = reactive({
   projects: [],
@@ -14,7 +17,7 @@ const state = reactive({
 
 const projects = computed(() =>
   state.projects
-    .filter((repo) => !repo.fork && repo.name !== 'meu-portfolio' && repo.name !== 'vanicce')
+    .filter((repo) => !repo.fork && repo.name !== 'meu-portfolio' && repo.name !== 'vanicce' && !featuredNames.has(repo.name))
     .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
 )
 
@@ -44,7 +47,13 @@ const loadProjects = async () => {
   }
 }
 
-onMounted(loadProjects)
+onMounted(async () => {
+  await loadProjects()
+  const id = decodeURIComponent(route.hash.replace('#', ''))
+  if (!id) return
+  await nextTick()
+  document.getElementById(id)?.scrollIntoView({ block: 'center' })
+})
 </script>
 
 <template>
@@ -64,6 +73,22 @@ onMounted(loadProjects)
         >{{ t('projects.api') }}</a>.
       </p>
     </header>
+
+    <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <projectCard
+        v-for="repo in featured"
+        :key="repo.name"
+        :name="repo.name"
+        :language="repo.language"
+        :homepage="repo.homepage"
+        :html_url="repo.html_url"
+        :topics="repo.topics"
+      />
+    </section>
+
+    <h2 class="mb-6 mt-14 text-2xl font-black tracking-tight text-neutral-950 dark:text-neutral-50">
+      {{ t('projects.more') }}
+    </h2>
 
     <section>
       <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">

@@ -6,14 +6,13 @@ import { useI18n } from '../i18n'
 const { t } = useI18n()
 
 const techs = [
-  { name: 'HTML5', label: 'HTML' },
-  { name: 'CSS3', label: 'CSS' },
-  { name: 'JavaScript', label: 'JavaScript' },
-  { name: 'vue', label: 'Vue' },
-  { name: 'react', label: 'React' },
-  { name: 'tailwind', label: 'Tailwind' },
-  { name: 'mySQL', label: 'MySQL' },
-  { name: 'git', label: 'Git' },
+  { name: 'HTML5', label: 'HTML', to: '/projects#pomodoro' },
+  { name: 'CSS3', label: 'CSS', to: '/projects#pomodoro' },
+  { name: 'JavaScript', label: 'JavaScript', to: '/projects#pomodoro' },
+  { name: 'vue', label: 'Vue', to: '/projects#Github-card' },
+  { name: 'react', label: 'React', to: '/projects#link-tree' },
+  { name: 'tailwind', label: 'Tailwind', to: '/projects#Github-card' },
+  { name: 'git', label: 'Git', href: 'https://github.com/pedromedem' },
 ]
 </script>
 
@@ -39,8 +38,8 @@ const techs = [
       </div>
       <div class="scroller-mask -mx-5 overflow-hidden sm:-mx-8 md:-mx-10">
         <div class="scroller_inner flex w-max gap-3.5 px-5 py-4 sm:px-8 md:px-10">
-          <scrollComponent v-for="tech in techs" :key="tech.name" :name="tech.name" :label="tech.label" />
-          <scrollComponent v-for="tech in techs" :key="`${tech.name}-copy`" :name="tech.name" :label="tech.label" duplicate />
+          <scrollComponent v-for="tech in techs" :key="tech.name" :name="tech.name" :label="tech.label" :to="tech.to" :href="tech.href" />
+          <scrollComponent v-for="tech in techs" :key="`${tech.name}-copy`" :name="tech.name" :label="tech.label" :to="tech.to" :href="tech.href" duplicate />
         </div>
       </div>
     </section>
@@ -55,7 +54,10 @@ const techs = [
           </p>
           <p class="mt-5 italic text-neutral-500 dark:text-neutral-400">{{ t('about.hint') }}</p>
         </div>
-        <router-link to="/projects" class="btn-primary mt-10 self-start">{{ t('nav.projects') }}</router-link>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <router-link to="/projects" class="btn-primary">{{ t('nav.projects') }}</router-link>
+          <router-link to="/resume" class="btn-ghost">{{ t('resume.nav') }}</router-link>
+        </div>
       </div>
       <contact />
     </section>

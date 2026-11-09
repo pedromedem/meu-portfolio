@@ -1,9 +1,16 @@
 import { ref } from 'vue'
 
-const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('locale') : null
-export const locale = ref(stored === 'pt' ? 'pt' : 'en')
+function readStoredLocale() {
+  try {
+    return localStorage.getItem('locale')
+  } catch {
+    return null
+  }
+}
 
-const messages = {
+export const locale = ref(readStoredLocale() === 'pt' ? 'pt' : 'en')
+
+export const messages = {
   en: {
     'nav.home': 'Home',
     'nav.about': 'About',
@@ -15,10 +22,10 @@ const messages = {
     'lang.pt': 'Portuguese',
     'home.role': 'Front-end developer',
     'home.hello': 'Hi, my name is Lucas.',
-    'home.before': 'Passionate about',
-    'home.em': 'creating intuitive user experiences',
-    'home.after': 'Always seeking new challenges and ways to improve my skills. Here you will find some projects and learn a little about me.',
-    'home.enjoy': 'Enjoy',
+    'home.before': 'I study',
+    'home.em': 'JavaScript, Vue and Tailwind',
+    'home.after': 'and practice by shipping small interfaces. The projects on this site are that practice.',
+    'home.enjoy': 'About me',
     'home.portrait': 'Portrait of Lucas',
     'about.kicker': 'About',
     'about.title': 'About Me',
@@ -39,8 +46,9 @@ const messages = {
     'contact.body': 'Feel free to reach out to me through GitHub or Linkedin. Thank you for visiting my portfolio, and I look forward to sharing my programming journey with you!',
     'projects.kicker': 'Work',
     'projects.title': 'Main Projects',
-    'projects.before': 'All projects listed here are updated via the',
+    'projects.before': 'Three projects have a short note taken from their repositories. The others stay in sync with the',
     'projects.api': 'GitHub API',
+    'projects.more': 'Also on GitHub',
     'projects.error': 'Sorry, no data available at the moment.',
     'projects.empty': 'No projects to show yet.',
     'card.repo': 'Open GitHub repository',
@@ -49,6 +57,11 @@ const messages = {
     'missing.title': 'This page does not exist.',
     'missing.back': 'Back home',
     'top': 'Back to top',
+    'resume.nav': 'Resume',
+    'resume.title': 'Resume',
+    'resume.print': 'Print or save as PDF',
+    'resume.projects': 'Projects',
+    'resume.skills': 'Skills shown in public projects',
   },
   pt: {
     'nav.home': 'Início',
@@ -61,10 +74,10 @@ const messages = {
     'lang.pt': 'Português',
     'home.role': 'Desenvolvedor front-end',
     'home.hello': 'Olá, meu nome é Lucas.',
-    'home.before': 'Apaixonado por',
-    'home.em': 'criar experiências intuitivas',
-    'home.after': 'Sempre em busca de novos desafios e de formas de melhorar minhas habilidades. Aqui você encontra alguns projetos e um pouco sobre mim.',
-    'home.enjoy': 'Conhecer',
+    'home.before': 'Estudo',
+    'home.em': 'JavaScript, Vue e Tailwind',
+    'home.after': 'e pratico publicando interfaces pequenas. Os projetos deste site são essa prática.',
+    'home.enjoy': 'Sobre mim',
     'home.portrait': 'Retrato de Lucas',
     'about.kicker': 'Sobre',
     'about.title': 'Sobre mim',
@@ -85,8 +98,9 @@ const messages = {
     'contact.body': 'Fique à vontade para falar comigo pelo GitHub ou pelo LinkedIn. Obrigado por visitar meu portfólio. Quero compartilhar essa jornada de programação com você!',
     'projects.kicker': 'Trabalho',
     'projects.title': 'Principais projetos',
-    'projects.before': 'Os projetos listados aqui são atualizados pela',
+    'projects.before': 'Três projetos têm uma nota curta tirada dos repositórios. Os outros continuam sincronizados com a',
     'projects.api': 'API do GitHub',
+    'projects.more': 'Também no GitHub',
     'projects.error': 'Desculpe, não há dados disponíveis no momento.',
     'projects.empty': 'Nenhum projeto para mostrar ainda.',
     'card.repo': 'Abrir repositório no GitHub',
@@ -95,6 +109,11 @@ const messages = {
     'missing.title': 'Esta página não existe.',
     'missing.back': 'Voltar ao início',
     'top': 'Voltar ao topo',
+    'resume.nav': 'Currículo',
+    'resume.title': 'Currículo',
+    'resume.print': 'Imprimir ou salvar em PDF',
+    'resume.projects': 'Projetos',
+    'resume.skills': 'Habilidades usadas em projetos públicos',
   },
 }
 

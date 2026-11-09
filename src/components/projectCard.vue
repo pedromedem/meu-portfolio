@@ -2,8 +2,10 @@
 import { computed, ref } from 'vue'
 import GithubIcon from './GithubIcon.vue'
 import { useI18n } from '../i18n'
+import { projectCopy } from '../content/projects'
+import { safeHttpUrl } from '../lib/url'
 
-const { t } = useI18n()
+const { locale, t } = useI18n()
 
 const props = defineProps({
   name: { type: String, default: '' },
@@ -16,22 +18,12 @@ const props = defineProps({
 
 const imageFailed = ref(false)
 
-function safeHttpUrl(value) {
-  if (!value) return ''
-  try {
-    const url = new URL(value)
-    if (url.protocol !== 'http:' && url.protocol !== 'https:') return ''
-    return url.href
-  } catch {
-    return ''
-  }
-}
-
 const liveUrl = computed(() => safeHttpUrl(props.homepage))
 const repoUrl = computed(() => safeHttpUrl(props.html_url))
 const title = computed(() => String(props.name || '').replace(/[-_]/g, ' '))
 const initial = computed(() => title.value.charAt(0).toUpperCase())
 const topicList = computed(() => (Array.isArray(props.topics) ? props.topics : []))
+const note = computed(() => projectCopy(props.name, locale.value))
 const screenshot = computed(() => {
   if (!liveUrl.value) return ''
   const host = new URL(liveUrl.value).hostname
@@ -40,7 +32,7 @@ const screenshot = computed(() => {
 </script>
 
 <template>
-  <article class="flex h-full flex-col overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_24px_50px_-36px_rgba(40,10,60,0.45)] transition duration-300 hover:-translate-y-1 dark:border-white/15 dark:bg-[#2a2a2a] dark:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.85)]">
+  <article :id="name" class="flex h-full flex-col overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_24px_50px_-36px_rgba(40,10,60,0.45)] transition duration-300 hover:-translate-y-1 dark:border-white/15 dark:bg-[#2a2a2a] dark:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.85)]">
     <div class="relative aspect-[16/10] overflow-hidden bg-neutral-200 dark:bg-neutral-900">
       <div class="absolute inset-0 bg-gradient-to-br from-pink-500 via-violet-600 to-neutral-950" />
       <img
@@ -71,7 +63,10 @@ const screenshot = computed(() => {
           class="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-600 dark:bg-white/10 dark:text-neutral-200"
         >{{ language }}</span>
       </div>
-      <p v-if="description" class="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+      <p v-if="note" class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+        {{ note }}
+      </p>
+      <p v-else-if="description" class="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
         {{ description }}
       </p>
       <div v-if="topicList.length" class="mt-3 flex flex-wrap gap-1.5">

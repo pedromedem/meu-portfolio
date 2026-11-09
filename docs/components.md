@@ -13,7 +13,7 @@ The home card tilts only while a mouse or pen is over it, and eases back when th
 ## About Page
 
 ### Carousel
-Technologies render twice so the track can loop. The second copy is `aria-hidden` and removed from the tab order. Each logo is masked from `/vue.svg` (and the other absolute icon paths) and takes a brand color that lightens in the dark theme.
+Technologies render twice so the track can loop. The second copy is `aria-hidden` and removed from the tab order. Each logo is masked from `/vue.svg` (and the other absolute icon paths) and takes a brand color that lightens in the dark theme. A chip links to the public project that uses that technology, or to the GitHub profile for Git.
 
 ```vue
 <scrollComponent v-for="tech in techs" :key="tech.name" :name="tech.name" :label="tech.label" />

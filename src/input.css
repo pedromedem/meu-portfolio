@@ -104,6 +104,12 @@ img {
   outline-offset: 3px;
 }
 
+@media print {
+  .fixed {
+    display: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn-primary,
   .btn-ghost,

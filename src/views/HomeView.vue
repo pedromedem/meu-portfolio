@@ -79,7 +79,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
             </h1>
             <p class="mt-4 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
               {{ t('home.before') }}
-              <span class="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text font-semibold text-transparent">{{ t('home.em') }}</span>.
+              <span class="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text font-semibold text-transparent">{{ t('home.em') }}</span>
               {{ t('home.after') }}
             </p>
             <p class="mt-4 text-sm font-medium tracking-wide text-neutral-500 dark:text-neutral-400">

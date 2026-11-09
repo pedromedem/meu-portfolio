@@ -4,12 +4,12 @@ import { computed } from 'vue'
 const props = defineProps({
   name: { type: String, default: '' },
   label: { type: String, default: '' },
+  to: { type: String, default: '' },
+  href: { type: String, default: '' },
   duplicate: { type: Boolean, default: false },
 })
 
-const searchUrl = computed(
-  () => `https://www.google.com/search?q=${encodeURIComponent(props.label || props.name)}`
-)
+const external = computed(() => props.href || '')
 
 const tones = {
   HTML5: 'text-[#e34f26] dark:text-[#ff9a76]',
@@ -27,9 +27,10 @@ const tone = computed(() => tones[props.name] || 'text-neutral-900 dark:text-neu
 
 <template>
   <a
+    v-if="external"
     class="tech-chip inline-flex shrink-0 items-center gap-2.5 rounded-full border border-black/10 bg-white px-4 py-2.5 text-neutral-900 shadow-sm transition hover:border-violet-400 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-violet-300"
     :class="{ 'tech-chip--clone': duplicate }"
-    :href="searchUrl"
+    :href="external"
     target="_blank"
     rel="noopener noreferrer"
     :tabindex="duplicate ? -1 : undefined"
@@ -43,6 +44,22 @@ const tone = computed(() => tones[props.name] || 'text-neutral-900 dark:text-neu
     />
     <span class="text-sm font-semibold">{{ label || name }}</span>
   </a>
+  <router-link
+    v-else
+    class="tech-chip inline-flex shrink-0 items-center gap-2.5 rounded-full border border-black/10 bg-white px-4 py-2.5 text-neutral-900 shadow-sm transition hover:border-violet-400 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-violet-300"
+    :class="{ 'tech-chip--clone': duplicate }"
+    :to="to"
+    :tabindex="duplicate ? -1 : undefined"
+    :aria-hidden="duplicate ? 'true' : undefined"
+  >
+    <span
+      class="tech-icon"
+      :class="tone"
+      :style="{ maskImage: `url(/${name}.svg)`, WebkitMaskImage: `url(/${name}.svg)` }"
+      aria-hidden="true"
+    />
+    <span class="text-sm font-semibold">{{ label || name }}</span>
+  </router-link>
 </template>
 
 <style scoped>
