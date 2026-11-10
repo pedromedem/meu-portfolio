@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { filterCatalog, languageLabel, languagesIn } from './catalog'
 import { mailHref } from './mail'
@@ -49,7 +50,13 @@ describe('featured pages', () => {
     expect(projectPath('Github-card')).toBe('/projects/github-card')
     expect(findFeatured('POMODORO')?.name).toBe('pomodoro')
     expect(findFeatured('missing')).toBeNull()
-    expect(screenshotFor('https://lucas-pomodoro.vercel.app')).toContain('lucas-pomodoro.vercel.app_desktop.jpeg')
+    expect(screenshotFor('https://lucas-pomodoro.vercel.app')).toBe('/screenshots/lucas-pomodoro.vercel.app/lucas-pomodoro.vercel.app_desktop.jpeg')
+    expect(screenshotFor('https://example.com')).toBe('')
     expect(screenshotFor('javascript:alert(1)')).toBe('')
+    const hosts = readdirSync(new URL('../../public/screenshots/', import.meta.url))
+    expect(hosts.length).toBeGreaterThan(0)
+    for (const host of hosts) {
+      expect(screenshotFor(`https://${host}`)).toBe(`/screenshots/${host}/${host}_desktop.jpeg`)
+    }
   })
 })

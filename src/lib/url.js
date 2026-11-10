@@ -9,9 +9,18 @@ export function safeHttpUrl(value) {
   }
 }
 
+const screenshotHosts = new Set([
+  'github-card.vercel.app',
+  'link-tree-lucwx.vercel.app',
+  'lucas-pomodoro.vercel.app',
+  'lucas-portfolio-navy.vercel.app',
+  'projeto-inicial-spotify.vercel.app',
+])
+
 export function screenshotFor(homepage) {
   const live = safeHttpUrl(homepage)
   if (!live) return ''
-  const host = new URL(live).hostname
-  return `https://raw.githubusercontent.com/lucwx/web-screenshot/main/screenshots/${host}/${host}_desktop.jpeg`
+  const host = new URL(live).hostname.replace(/\.$/, '')
+  if (!screenshotHosts.has(host)) return ''
+  return `/screenshots/${host}/${host}_desktop.jpeg`
 }
