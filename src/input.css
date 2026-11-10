@@ -39,7 +39,15 @@ img {
   }
 
   .page-wide {
-    @apply max-w-6xl;
+    @apply max-w-6xl gap-8 md:gap-10;
+  }
+
+  .stage {
+    @apply mx-auto flex w-full items-center justify-center px-5 sm:px-8;
+  }
+
+  .sheet {
+    @apply mx-auto w-full max-w-3xl px-5 pb-10 sm:px-8;
   }
 
   .page-title {

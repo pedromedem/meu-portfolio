@@ -46,8 +46,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </script>
 
 <template>
-  <main class="page">
-    <div class="scene w-full">
+  <main class="stage">
+    <div class="scene w-full max-w-3xl">
       <article
         ref="card"
         class="profile-card"
@@ -74,7 +74,7 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
             <p class="eyebrow">
               {{ t('home.role') }}
             </p>
-            <h1 class="page-title">
+            <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
               {{ t('home.hello') }}
             </h1>
             <p class="mt-4 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">

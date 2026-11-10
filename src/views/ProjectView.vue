@@ -58,12 +58,12 @@ onMounted(async () => {
 
 <template>
   <main class="page page-wide">
-    <header class="surface surface-pad">
+    <header class="max-w-2xl">
       <p class="eyebrow">{{ t('projects.kicker') }}</p>
-      <h1 class="page-title">
+      <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 md:text-4xl">
         {{ t('projects.title') }}
       </h1>
-      <p class="page-lead">
+      <p class="mt-3 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
         {{ t('projects.before') }}
         <a
           href="https://docs.github.com/pt/rest/quickstart?apiVersion=2022-11-28"
@@ -87,7 +87,7 @@ onMounted(async () => {
     </section>
 
     <section class="flex flex-col gap-6 md:gap-8">
-      <h2 class="block-title">{{ t('projects.more') }}</h2>
+      <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">{{ t('projects.more') }}</h2>
 
       <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">
         <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
