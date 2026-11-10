@@ -9,20 +9,30 @@
     <meta property="og:description" content="My portfolio to demonstrate my skills" />
     <meta property="og:url" content="https://lucas-portfolio-navy.vercel.app" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lucas-portfolio-navy.vercel.app/portfolio.png" />
+    <meta property="og:image" content="https://lucas-portfolio-navy.vercel.app/og.png" />
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://lucas-portfolio-navy.vercel.app">
     <meta property="twitter:title" content="Lucas Portfolio">
     <meta property="twitter:description" content="My portfolio to demonstrate my skills">
-    <meta property="twitter:image" content="https://lucas-portfolio-navy.vercel.app/portfolio.png">
+    <meta property="twitter:image" content="https://lucas-portfolio-navy.vercel.app/og.png">
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var dark = stored ? stored === 'dark' : prefersDark
+          document.documentElement.classList.toggle('dark', dark)
+          document.documentElement.lang = localStorage.getItem('locale') === 'pt' ? 'pt-BR' : 'en'
+        } catch (e) {}
+      })()
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz@9..144&family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <title>Lucas Portfolio</title>
     <link rel="icon" href="/logo-white-256x256.png">
-    <link href="/dist/output.css" rel="stylesheet">
   </head>
   <body>
     <div id="app"></div>

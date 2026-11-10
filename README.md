@@ -4,8 +4,7 @@
 - [How To Run](#how-to-run)
 - [Examples](#examples)
 
-You can see a explication above components here:
-- [Components](./docs/components.md)
+Component notes live in [Components](./docs/components.md). Tailwind is compiled by Vite, so `npm run dev` is enough.
 
 ## Technologies Used
 HTML, CSS, JavaScript, Vue3 (Vue Router), Tailwind CSS, NPM (Node Package Manager) and Vite.
@@ -14,7 +13,7 @@ HTML, CSS, JavaScript, Vue3 (Vue Router), Tailwind CSS, NPM (Node Package Manage
 
 ### 1. Clone Repository
 ```sh
-git clone https://github.com/vanicce/meu-portfolio.git
+git clone https://github.com/pedromedem/meu-portfolio.git
 
 cd meu-portfolio
 ```

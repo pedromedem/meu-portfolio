@@ -2,10 +2,8 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    "./src/components/*.vue",
-    "./src/views/*.vue",
-    "./*.html",
-    "./src/*.vue",
+    "./index.html",
+    "./src/**/*.{vue,js}",
   ],
   theme: {
     extend: {
@@ -13,7 +11,7 @@ module.exports = {
         shark: "#100f0f",
       },
       fontFamily: {
-        sans: ["Montserrat"],
+        sans: ["Montserrat", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

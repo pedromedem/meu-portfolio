@@ -1,66 +1,99 @@
 <script setup>
 import contact from '../components/contact.vue'
 import scrollComponent from '../components/scrollComponent.vue'
+import { useI18n } from '../i18n'
 
-const techs = ['HTML5', 'CSS3', 'JavaScript', 'vue', 'react', 'tailwind', 'mySQL', 'git']
+const { t } = useI18n()
 
+const techs = [
+  { name: 'HTML5', label: 'HTML', to: '/projects#pomodoro' },
+  { name: 'CSS3', label: 'CSS', to: '/projects#pomodoro' },
+  { name: 'JavaScript', label: 'JavaScript', to: '/projects#pomodoro' },
+  { name: 'vue', label: 'Vue', to: '/projects#Github-card' },
+  { name: 'react', label: 'React', to: '/projects#link-tree' },
+  { name: 'tailwind', label: 'Tailwind', to: '/projects#Github-card' },
+  { name: 'git', label: 'Git', href: 'https://github.com/pedromedem' },
+]
 </script>
 
 <template>
-  <main class="flex flex-col dark:text-[#BBBBBB] lg:px-20">
-    <section class="flex justify-center items-center flex-col p-3 gap-4">
-      <h2 class="text-shark text-xl font-bold md:text-4xl dark:text-[#BBBBBB]">About Me</h2>
-      <p class="md:text-xl md:w-full">I'm Lucas, an aspiring programmer on a <strong>continuous learning journey</strong>.
-        Currently, I'm dedicated to honing my skills in programming and exploring the diverse realms of software
-        development.</p>
-
-      <p class="md:text-xl">I am investing my time in studies, acquiring knowledge in <strong>JavaScript, Vue and
-          Tailwind</strong>. My passion for problem-solving and creating innovative solutions drives me to delve deep into
-        the programming universe.</p>
-
+  <main class="page">
+    <section class="surface surface-pad">
+      <p class="eyebrow">{{ t('about.kicker') }}</p>
+      <h1 class="page-title">
+        {{ t('about.title') }}
+      </h1>
+      <div class="page-lead space-y-5">
+        <p>{{ t('about.p1a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p1b') }}</strong>.
+          {{ t('about.p1c') }}</p>
+        <p>{{ t('about.p2a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p2b') }}</strong>.
+          {{ t('about.p2c') }}</p>
+      </div>
     </section>
 
-    <section class="flex flex-col items-center gap-4">
-      <h2 class="text-shark text-xl md:text-4xl font-bold dark:text-[#BBBBBB]">My Habilities:</h2>
-      <div class="w-full md:w-2/4 overflow-hidden">
-        <div class="scroller_inner flex flex-nowrap w-fit p-4 px-4 gap-10 ">
-          <scrollComponent v-for="tech in techs" :tech="tech" />
-          <scrollComponent v-for="tech in techs" :tech="tech" />
+    <section class="flex flex-col gap-6 md:gap-8">
+      <div>
+        <p class="eyebrow">{{ t('about.stack') }}</p>
+        <h2 class="block-title mt-4">{{ t('about.skills') }}</h2>
+      </div>
+      <div class="scroller-mask -mx-5 overflow-hidden sm:-mx-8 md:-mx-10">
+        <div class="scroller_inner flex w-max gap-3.5 px-5 py-4 sm:px-8 md:px-10">
+          <scrollComponent v-for="tech in techs" :key="tech.name" :name="tech.name" :label="tech.label" :to="tech.to" :href="tech.href" />
+          <scrollComponent v-for="tech in techs" :key="`${tech.name}-copy`" :name="tech.name" :label="tech.label" :to="tech.to" :href="tech.href" duplicate />
         </div>
       </div>
     </section>
 
-    <section class="flex flex-col items-center">
-      <p class="p-3 md:text-xl">Throughout my learning journey, I have developed projects. Each project represents a
-        significant step in my evolution as a programmer, showcasing my ability to apply learned concepts in
-        <strong>practical scenarios.</strong>
-      </p>
-
-      <p class="italic md:text-xl p-1 self-center">To see my projects click here!</p>
-      <router-link to="/projects"
-        class="border p-2 rounded-md m-3 border-black text-center font-bold md:self-center md:text-xl transition md:hover:scale-110 dark:border-[#BBBBBB]">Projects</router-link>
-
+    <section class="grid items-stretch gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+      <div class="surface surface-pad flex flex-col justify-between">
+        <div>
+          <p class="eyebrow">{{ t('about.work') }}</p>
+          <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
+            {{ t('about.workBody') }}
+            <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.workEm') }}</strong>
+          </p>
+          <p class="mt-5 italic text-neutral-500 dark:text-neutral-400">{{ t('about.hint') }}</p>
+        </div>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <router-link to="/projects" class="btn-primary">{{ t('nav.projects') }}</router-link>
+          <router-link to="/resume" class="btn-ghost">{{ t('resume.nav') }}</router-link>
+        </div>
+      </div>
       <contact />
     </section>
   </main>
 </template>
 
-<style>
-.scroller_inner {
-  animation: scroll 30s linear infinite;
+<style scoped>
+.scroller-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
-.scroller_inner:hover {
+.scroller_inner {
+  animation: scroll 32s linear infinite;
+}
+
+.scroller-mask:hover .scroller_inner {
   animation-play-state: paused;
 }
 
 @keyframes scroll {
   from {
-    transform: translate(0%);
+    transform: translateX(0);
   }
 
   to {
-    transform: translate(-50%);
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroller_inner {
+    animation: none;
+    width: auto;
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 </style>

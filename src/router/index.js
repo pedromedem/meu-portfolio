@@ -19,8 +19,20 @@ const router = createRouter({
       name: 'projects',
       component: () => import('../views/ProjectView.vue'),
     },
+    {
+      path: '/resume',
+      name: 'resume',
+      component: () => import('../views/ResumeView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue'),
+    },
   ],
   scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, top: 96 }
     return { top: 0 }
   }
 })
