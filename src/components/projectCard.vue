@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import GithubIcon from './GithubIcon.vue'
 import { useI18n } from '../i18n'
 import { projectCopy } from '../content/projects'
-import { safeHttpUrl } from '../lib/url'
+import { safeHttpUrl, screenshotFor } from '../lib/url'
 
 const { locale, t } = useI18n()
 
@@ -14,6 +14,7 @@ const props = defineProps({
   html_url: { type: String, default: '' },
   homepage: { type: String, default: '' },
   topics: { type: Array, default: () => [] },
+  to: { type: [String, Object], default: '' },
 })
 
 const imageFailed = ref(false)
@@ -24,11 +25,7 @@ const title = computed(() => String(props.name || '').replace(/[-_]/g, ' '))
 const initial = computed(() => title.value.charAt(0).toUpperCase())
 const topicList = computed(() => (Array.isArray(props.topics) ? props.topics : []))
 const note = computed(() => projectCopy(props.name, locale.value))
-const screenshot = computed(() => {
-  if (!liveUrl.value) return ''
-  const host = new URL(liveUrl.value).hostname
-  return `https://raw.githubusercontent.com/lucwx/web-screenshot/main/screenshots/${host}/${host}_desktop.jpeg`
-})
+const screenshot = computed(() => screenshotFor(props.homepage))
 </script>
 
 <template>
@@ -76,7 +73,13 @@ const screenshot = computed(() => {
           class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium capitalize text-neutral-700 dark:bg-white/10 dark:text-neutral-200"
         >{{ String(topic).replaceAll('-', ' ') }}</span>
       </div>
-      <div class="mt-auto flex justify-end gap-2 pt-5">
+      <div class="mt-auto flex items-center gap-2 pt-5" :class="to ? 'justify-between' : 'justify-end'">
+        <router-link
+          v-if="to"
+          :to="to"
+          class="text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
+        >{{ t('projects.details') }}</router-link>
+        <div class="flex gap-2">
         <a
           v-if="repoUrl"
           class="icon-btn"
@@ -102,6 +105,7 @@ const screenshot = computed(() => {
             <line x1="10" y1="14" x2="21" y2="3"></line>
           </svg>
         </a>
+        </div>
       </div>
     </div>
   </article>

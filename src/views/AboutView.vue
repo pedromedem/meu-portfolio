@@ -6,12 +6,12 @@ import { useI18n } from '../i18n'
 const { t } = useI18n()
 
 const techs = [
-  { name: 'HTML5', label: 'HTML', to: '/projects#pomodoro' },
-  { name: 'CSS3', label: 'CSS', to: '/projects#pomodoro' },
-  { name: 'JavaScript', label: 'JavaScript', to: '/projects#pomodoro' },
-  { name: 'vue', label: 'Vue', to: '/projects#Github-card' },
-  { name: 'react', label: 'React', to: '/projects#link-tree' },
-  { name: 'tailwind', label: 'Tailwind', to: '/projects#Github-card' },
+  { name: 'HTML5', label: 'HTML', to: '/projects/pomodoro' },
+  { name: 'CSS3', label: 'CSS', to: '/projects/pomodoro' },
+  { name: 'JavaScript', label: 'JavaScript', to: '/projects/pomodoro' },
+  { name: 'vue', label: 'Vue', to: '/projects/github-card' },
+  { name: 'react', label: 'React', to: '/projects/link-tree' },
+  { name: 'tailwind', label: 'Tailwind', to: '/projects/github-card' },
   { name: 'git', label: 'Git', href: 'https://github.com/pedromedem' },
 ]
 </script>
@@ -24,10 +24,8 @@ const techs = [
         {{ t('about.title') }}
       </h1>
       <div class="page-lead space-y-5">
-        <p>{{ t('about.p1a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p1b') }}</strong>.
-          {{ t('about.p1c') }}</p>
-        <p>{{ t('about.p2a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p2b') }}</strong>.
-          {{ t('about.p2c') }}</p>
+        <p>{{ t('about.p1') }}</p>
+        <p>{{ t('about.p2') }}</p>
       </div>
     </section>
 
@@ -44,17 +42,15 @@ const techs = [
       </div>
     </section>
 
-    <section class="grid items-stretch gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
-      <div class="surface surface-pad flex flex-col justify-between">
+    <section class="grid items-start gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+      <div class="surface surface-pad flex flex-col">
         <div>
           <p class="eyebrow">{{ t('about.work') }}</p>
           <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
             {{ t('about.workBody') }}
-            <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.workEm') }}</strong>
           </p>
-          <p class="mt-5 italic text-neutral-500 dark:text-neutral-400">{{ t('about.hint') }}</p>
         </div>
-        <div class="mt-10 flex flex-wrap gap-3">
+        <div class="mt-8 flex flex-wrap gap-3">
           <router-link to="/projects" class="btn-primary">{{ t('nav.projects') }}</router-link>
           <router-link to="/resume" class="btn-ghost">{{ t('resume.nav') }}</router-link>
         </div>

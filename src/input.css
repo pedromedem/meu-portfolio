@@ -92,6 +92,18 @@ img {
   .icon-btn {
     @apply h-11 w-11 rounded-full border border-neutral-950/10 text-neutral-950 hover:-translate-y-0.5 dark:border-white/20 dark:text-neutral-100;
   }
+
+  .field {
+    @apply w-full rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-sm text-neutral-950 dark:border-white/20 dark:bg-black/20 dark:text-neutral-50;
+  }
+
+  .chip {
+    @apply cursor-pointer rounded-full border border-black/10 px-3 py-1.5 text-sm font-semibold text-neutral-700 dark:border-white/20 dark:text-neutral-200;
+  }
+
+  .chip.is-on {
+    @apply border-transparent bg-neutral-950 text-stone-50 dark:bg-stone-50 dark:text-neutral-950;
+  }
 }
 
 .dark .surface {
@@ -129,9 +141,15 @@ img {
   z-index: 1;
 }
 
+article[id] {
+  scroll-margin-top: 7rem;
+}
+
 .btn-primary:focus-visible,
 .btn-ghost:focus-visible,
-.icon-btn:focus-visible {
+.icon-btn:focus-visible,
+.field:focus-visible,
+.chip:focus-visible {
   outline: 2px solid #8b5cf6;
   outline-offset: 3px;
 }

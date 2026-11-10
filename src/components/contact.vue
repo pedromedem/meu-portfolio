@@ -1,8 +1,68 @@
 <script setup>
+import { computed, onBeforeUnmount, ref } from 'vue'
 import GithubIcon from './GithubIcon.vue'
 import { useI18n } from '../i18n'
+import { mailHref } from '../lib/mail'
 
 const { t } = useI18n()
+const email = 'ssilvalucas2004@gmail.com'
+const name = ref('')
+const message = ref('')
+const copied = ref(false)
+const messageError = ref(false)
+const messageField = ref(null)
+const emailHref = computed(() => mailHref({ to: email, subject: t('contact.subject') }))
+let timer = 0
+
+const openMail = () => {
+  if (!message.value.trim()) {
+    messageError.value = true
+    messageField.value?.focus()
+    return
+  }
+
+  messageError.value = false
+  window.location.href = mailHref({
+    to: email,
+    name: name.value,
+    message: message.value,
+    subject: t('contact.subject'),
+  })
+}
+
+const markCopied = () => {
+  copied.value = true
+  window.clearTimeout(timer)
+  timer = window.setTimeout(() => {
+    copied.value = false
+  }, 5000)
+}
+
+const copyWithField = () => {
+  const field = document.createElement('textarea')
+  field.value = email
+  field.setAttribute('readonly', '')
+  field.style.position = 'fixed'
+  field.style.opacity = '0'
+  document.body.appendChild(field)
+  field.focus()
+  field.select()
+  const ok = document.execCommand('copy')
+  field.remove()
+  return ok
+}
+
+const copyEmail = async () => {
+  try {
+    await navigator.clipboard.writeText(email)
+    markCopied()
+    return
+  } catch {
+    if (copyWithField()) markCopied()
+  }
+}
+
+onBeforeUnmount(() => window.clearTimeout(timer))
 </script>
 
 <template>
@@ -13,9 +73,34 @@ const { t } = useI18n()
         <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('contact.lead') }}</strong>.
         {{ t('contact.body') }}
       </p>
+      <form class="mt-8 flex flex-col gap-3" @submit.prevent="openMail">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400" for="contact-name">{{ t('contact.name') }}</label>
+          <input id="contact-name" v-model="name" class="field" type="text" name="name" autocomplete="name" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400" for="contact-message">{{ t('contact.message') }}</label>
+          <textarea
+            id="contact-message"
+            ref="messageField"
+            v-model="message"
+            class="field min-h-28 resize-y"
+            name="message"
+            rows="4"
+            :aria-invalid="messageError || undefined"
+            :aria-describedby="messageError ? 'contact-message-error' : undefined"
+            @input="messageError = false"
+          />
+          <p v-if="messageError" id="contact-message-error" class="text-sm text-pink-700 dark:text-pink-300">{{ t('contact.need') }}</p>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-3">
+          <button type="submit" class="btn-primary">{{ t('contact.open') }}</button>
+          <button type="button" :class="copied ? 'btn-primary' : 'btn-ghost'" @click="copyEmail">{{ copied ? t('contact.copied') : t('contact.copy') }}</button>
+        </div>
+      </form>
     </div>
     <div class="mt-10 flex flex-col items-start gap-5">
-      <a class="btn-ghost" href="mailto:ssilvalucas2004@gmail.com?subject=Olá, vi seu portfólio">ssilvalucas2004@gmail.com</a>
+      <a class="btn-ghost" :href="emailHref">ssilvalucas2004@gmail.com</a>
       <div class="flex items-center gap-3">
         <a href="https://github.com/pedromedem" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="GitHub">
           <GithubIcon :size="22" />

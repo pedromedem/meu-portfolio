@@ -51,6 +51,15 @@ const copy = {
 
 export const featuredNames = new Set(featured.map((project) => project.name))
 
+export function projectPath(name) {
+  return `/projects/${String(name || '').toLowerCase()}`
+}
+
+export function findFeatured(slug) {
+  const key = String(slug || '').toLowerCase()
+  return featured.find((project) => project.name.toLowerCase() === key) || null
+}
+
 export function projectCopy(name, locale) {
   const entry = copy[name]
   if (!entry) return ''
