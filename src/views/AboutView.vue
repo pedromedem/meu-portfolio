@@ -44,7 +44,7 @@ const techs = [
       </div>
     </section>
 
-    <section class="grid items-stretch gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+    <section class="grid items-start gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
       <div class="surface surface-pad flex flex-col justify-between">
         <div>
           <p class="eyebrow">{{ t('about.work') }}</p>

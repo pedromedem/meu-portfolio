@@ -8,3 +8,10 @@ export function safeHttpUrl(value) {
     return ''
   }
 }
+
+export function screenshotFor(homepage) {
+  const live = safeHttpUrl(homepage)
+  if (!live) return ''
+  const host = new URL(live).hostname
+  return `https://raw.githubusercontent.com/lucwx/web-screenshot/main/screenshots/${host}/${host}_desktop.jpeg`
+}
