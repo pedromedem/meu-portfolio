@@ -6,7 +6,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="surface flex h-full flex-col justify-between px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
+  <section class="surface surface-pad flex h-full flex-col justify-between">
     <div>
       <p class="eyebrow">{{ t('contact.kicker') }}</p>
       <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300">

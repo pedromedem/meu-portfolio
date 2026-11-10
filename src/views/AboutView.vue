@@ -17,13 +17,13 @@ const techs = [
 </script>
 
 <template>
-  <main class="mx-auto mb-6 mt-6 flex w-full max-w-5xl flex-col gap-12 px-5 sm:px-8 md:mb-10 md:mt-8 md:gap-16 md:px-10">
-    <section class="surface px-6 py-8 sm:px-10 sm:py-11 lg:px-12">
+  <main class="page">
+    <section class="surface surface-pad">
       <p class="eyebrow">{{ t('about.kicker') }}</p>
-      <h1 class="mt-4 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
+      <h1 class="page-title">
         {{ t('about.title') }}
       </h1>
-      <div class="mt-7 max-w-3xl space-y-5 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
+      <div class="page-lead space-y-5">
         <p>{{ t('about.p1a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p1b') }}</strong>.
           {{ t('about.p1c') }}</p>
         <p>{{ t('about.p2a') }} <strong class="font-semibold text-neutral-950 dark:text-neutral-50">{{ t('about.p2b') }}</strong>.
@@ -34,7 +34,7 @@ const techs = [
     <section class="flex flex-col gap-6 md:gap-8">
       <div>
         <p class="eyebrow">{{ t('about.stack') }}</p>
-        <h2 class="mt-4 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 md:text-4xl">{{ t('about.skills') }}</h2>
+        <h2 class="block-title mt-4">{{ t('about.skills') }}</h2>
       </div>
       <div class="scroller-mask -mx-5 overflow-hidden sm:-mx-8 md:-mx-10">
         <div class="scroller_inner flex w-max gap-3.5 px-5 py-4 sm:px-8 md:px-10">
@@ -45,7 +45,7 @@ const techs = [
     </section>
 
     <section class="grid items-stretch gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
-      <div class="surface flex flex-col justify-between px-6 py-8 sm:px-10 sm:py-10 lg:px-12">
+      <div class="surface surface-pad flex flex-col justify-between">
         <div>
           <p class="eyebrow">{{ t('about.work') }}</p>
           <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">

@@ -10,10 +10,10 @@ const printResume = () => window.print()
 </script>
 
 <template>
-  <main class="resume mx-auto w-full max-w-3xl px-5 py-6 sm:px-8">
-    <article class="surface px-6 py-8 sm:px-10 sm:py-11">
+  <main class="resume page">
+    <article class="surface surface-pad">
       <p class="eyebrow">{{ t('resume.nav') }}</p>
-      <h1 class="mt-3 text-4xl font-black tracking-tight text-neutral-950 dark:text-neutral-50">Lucas</h1>
+      <h1 class="page-title">Lucas</h1>
       <p class="mt-2 text-lg text-neutral-600 dark:text-neutral-300">{{ t('home.role') }}</p>
       <p class="mt-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-300">
         {{ t('home.before') }} {{ t('home.em') }} {{ t('home.after') }}
@@ -24,10 +24,10 @@ const printResume = () => window.print()
         <li><a href="https://linkedin.com/in/pedro-lucas-santos-silva" target="_blank" rel="noopener noreferrer">linkedin.com/in/pedro-lucas-santos-silva</a></li>
       </ul>
 
-      <h2 class="mt-10 text-xl font-black text-neutral-950 dark:text-neutral-50">{{ t('resume.skills') }}</h2>
+      <h2 class="block-title mt-10">{{ t('resume.skills') }}</h2>
       <p class="mt-3 text-neutral-700 dark:text-neutral-200">{{ skills.join(' · ') }}</p>
 
-      <h2 class="mt-10 text-xl font-black text-neutral-950 dark:text-neutral-50">{{ t('resume.projects') }}</h2>
+      <h2 class="block-title mt-10">{{ t('resume.projects') }}</h2>
       <div class="mt-4 space-y-5">
         <section v-for="project in featured" :key="project.name">
           <h3 class="font-bold text-neutral-950 dark:text-neutral-50">{{ project.name.replaceAll('-', ' ') }}</h3>

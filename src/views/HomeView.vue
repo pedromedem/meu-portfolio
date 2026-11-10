@@ -46,8 +46,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </script>
 
 <template>
-  <main class="flex items-center justify-center px-4 py-6 sm:px-8">
-    <div class="scene w-full max-w-3xl">
+  <main class="page">
+    <div class="scene w-full">
       <article
         ref="card"
         class="profile-card"
@@ -71,10 +71,10 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
           </div>
 
           <div class="flex min-w-0 flex-col items-center text-center md:items-start md:text-left">
-            <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400 sm:text-[0.72rem] sm:tracking-[0.28em]">
+            <p class="eyebrow">
               {{ t('home.role') }}
             </p>
-            <h1 class="mt-3 text-3xl font-black tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-4xl md:text-5xl">
+            <h1 class="page-title">
               {{ t('home.hello') }}
             </h1>
             <p class="mt-4 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-neutral-300 md:text-lg">
