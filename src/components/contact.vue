@@ -9,10 +9,19 @@ const email = 'ssilvalucas2004@gmail.com'
 const name = ref('')
 const message = ref('')
 const copied = ref(false)
+const messageError = ref(false)
+const messageField = ref(null)
 const emailHref = computed(() => mailHref({ to: email, subject: t('contact.subject') }))
 let timer = 0
 
 const openMail = () => {
+  if (!message.value.trim()) {
+    messageError.value = true
+    messageField.value?.focus()
+    return
+  }
+
+  messageError.value = false
   window.location.href = mailHref({
     to: email,
     name: name.value,
@@ -71,7 +80,18 @@ onBeforeUnmount(() => window.clearTimeout(timer))
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400" for="contact-message">{{ t('contact.message') }}</label>
-          <textarea id="contact-message" v-model="message" class="field min-h-28 resize-y" name="message" rows="4" />
+          <textarea
+            id="contact-message"
+            ref="messageField"
+            v-model="message"
+            class="field min-h-28 resize-y"
+            name="message"
+            rows="4"
+            :aria-invalid="messageError || undefined"
+            :aria-describedby="messageError ? 'contact-message-error' : undefined"
+            @input="messageError = false"
+          />
+          <p v-if="messageError" id="contact-message-error" class="text-sm text-pink-700 dark:text-pink-300">{{ t('contact.need') }}</p>
         </div>
         <div class="mt-2 flex flex-wrap gap-3">
           <button type="submit" class="btn-primary">{{ t('contact.open') }}</button>

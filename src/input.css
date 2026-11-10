@@ -141,6 +141,10 @@ img {
   z-index: 1;
 }
 
+article[id] {
+  scroll-margin-top: 7rem;
+}
+
 .btn-primary:focus-visible,
 .btn-ghost:focus-visible,
 .icon-btn:focus-visible,

@@ -31,7 +31,14 @@ const visible = computed(() => filterCatalog(catalog.value, { query: query.value
 const visibleFeatured = computed(() => visible.value.filter((project) => featuredNames.has(project.name)))
 const visibleRest = computed(() => visible.value.filter((project) => !featuredNames.has(project.name)))
 const filtering = computed(() => query.value.trim() !== '' || language.value !== '')
-const shownCount = computed(() => visibleFeatured.value.length + (state.loading ? 0 : visibleRest.value.length))
+const shownCount = computed(() => visibleFeatured.value.length + visibleRest.value.length)
+const listQuery = computed(() => {
+  const next = {}
+  const q = query.value.trim()
+  if (q) next.q = q
+  if (language.value) next.lang = language.value
+  return next
+})
 
 const clearFilters = () => {
   query.value = ''
@@ -51,6 +58,15 @@ watch([query, language], () => {
   if (same) return
   router.replace({ query: next, hash: route.hash })
 })
+
+watch(
+  () => [String(route.query.q || ''), String(route.query.lang || '').toLowerCase()],
+  ([q, lang]) => {
+    const typing = document.activeElement?.id === 'project-search'
+    if (!typing && query.value.trim() !== q) query.value = q
+    if (language.value !== lang) language.value = lang
+  }
+)
 
 const loadProjects = async () => {
   state.loading = true
@@ -115,7 +131,9 @@ onMounted(async () => {
           type="search"
           :placeholder="t('projects.search')"
         />
-        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ shownCount }} {{ t('projects.shown') }}</p>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400" aria-live="polite">
+          {{ state.loading ? t('projects.loading') : `${shownCount} ${shownCount === 1 ? t('projects.one') : t('projects.many')}` }}
+        </p>
       </div>
       <div class="flex flex-wrap gap-2" role="group" :aria-label="t('projects.all')">
         <button type="button" class="chip" :class="{ 'is-on': language === '' }" :aria-pressed="language === ''" @click="language = ''">{{ t('projects.all') }}</button>
@@ -146,7 +164,7 @@ onMounted(async () => {
         :homepage="repo.homepage"
         :html_url="repo.html_url"
         :topics="repo.topics"
-        :to="projectPath(repo.name)"
+        :to="{ path: projectPath(repo.name), query: listQuery }"
       />
     </section>
 

@@ -14,7 +14,7 @@ const props = defineProps({
   html_url: { type: String, default: '' },
   homepage: { type: String, default: '' },
   topics: { type: Array, default: () => [] },
-  to: { type: String, default: '' },
+  to: { type: [String, Object], default: '' },
 })
 
 const imageFailed = ref(false)

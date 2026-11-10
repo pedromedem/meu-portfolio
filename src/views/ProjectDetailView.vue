@@ -23,9 +23,9 @@ watch(() => route.params.slug, () => {
 </script>
 
 <template>
-  <main v-if="project" class="page max-w-3xl">
+  <main v-if="project" class="page max-w-3xl gap-8 md:gap-10">
     <router-link
-      to="/projects"
+      :to="{ path: '/projects', query: route.query }"
       class="w-fit text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
     >{{ t('projects.back') }}</router-link>
 
