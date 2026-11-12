@@ -28,26 +28,27 @@ const topicList = computed(() => (Array.isArray(props.topics) ? props.topics : [
 const note = computed(() => projectCopy(props.name, locale.value))
 const screenshot = computed(() => screenshotFor(props.homepage))
 const isHero = computed(() => props.size === 'hero')
-const isWide = computed(() => props.size === 'wide')
+const isTile = computed(() => props.size === 'tile')
+const shownTopics = computed(() => topicList.value.slice(0, isTile.value ? 2 : 4))
 </script>
 
 <template>
   <article
     :id="name"
-    class="flex h-full min-w-0 flex-col overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_24px_50px_-36px_rgba(40,10,60,0.45)] transition duration-300 hover:-translate-y-1 dark:border-white/15 dark:bg-[#2a2a2a] dark:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.85)]"
+    class="flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_24px_50px_-36px_rgba(40,10,60,0.45)] transition duration-300 hover:-translate-y-1 dark:border-white/15 dark:bg-[#2a2a2a] dark:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.85)]"
   >
     <div
       class="relative w-full shrink-0 overflow-hidden bg-neutral-200 dark:bg-neutral-900"
       :class="isHero
-        ? 'min-h-[14rem] flex-1 lg:min-h-[18rem]'
-        : isWide
-          ? 'aspect-[2/1]'
+        ? 'h-64 md:h-72 lg:h-auto lg:min-h-0 lg:flex-1'
+        : isTile
+          ? 'h-44 lg:h-32'
           : 'aspect-[16/10]'"
     >
       <div class="absolute inset-0 bg-gradient-to-br from-pink-500 via-violet-600 to-neutral-950" />
       <img
         v-if="screenshot && !imageFailed"
-        class="absolute inset-0 h-full w-full object-cover"
+        class="absolute inset-0 h-full w-full object-cover object-center"
         :src="screenshot"
         alt=""
         @error="imageFailed = true"
@@ -65,31 +66,34 @@ const isWide = computed(() => props.size === 'wide')
       />
     </div>
 
-    <div class="flex min-w-0 flex-1 flex-col px-5 pb-5 pt-4" :class="isHero ? 'lg:px-7 lg:py-6' : ''">
+    <div
+      class="flex min-h-0 min-w-0 flex-col px-4 pb-4 pt-3"
+      :class="isHero ? 'shrink-0 lg:px-6 lg:pb-5 lg:pt-4' : 'flex-1'"
+    >
       <div class="flex items-start justify-between gap-3">
         <h2
           class="font-bold capitalize tracking-tight text-neutral-950 dark:text-neutral-50"
-          :class="isHero ? 'text-2xl md:text-3xl' : 'text-lg'"
+          :class="isHero ? 'text-2xl' : 'text-base'"
         >{{ title }}</h2>
         <span
           v-if="language"
           class="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-600 dark:bg-white/10 dark:text-neutral-200"
         >{{ language }}</span>
       </div>
-      <p v-if="note" class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300" :class="isHero ? 'md:text-base' : 'line-clamp-4'">
+      <p v-if="note" class="mt-1.5 break-words text-sm leading-relaxed text-neutral-600 dark:text-neutral-300" :class="isHero ? 'line-clamp-3' : 'line-clamp-2'">
         {{ note }}
       </p>
-      <p v-else-if="description" class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300" :class="isWide ? 'line-clamp-4' : 'line-clamp-3'">
+      <p v-else-if="description" class="mt-1.5 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300" :class="isHero ? 'line-clamp-3' : 'line-clamp-2'">
         {{ description }}
       </p>
-      <div v-if="topicList.length" class="mt-3 flex flex-wrap gap-1.5">
+      <div v-if="shownTopics.length" class="mt-2.5 flex flex-wrap gap-1.5">
         <span
-          v-for="topic in topicList"
+          v-for="topic in shownTopics"
           :key="topic"
           class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium capitalize text-neutral-700 dark:bg-white/10 dark:text-neutral-200"
         >{{ String(topic).replaceAll('-', ' ') }}</span>
       </div>
-      <div class="mt-auto flex items-center gap-2 pt-5" :class="to ? 'justify-between' : 'justify-end'">
+      <div class="mt-auto flex items-center gap-2 pt-3" :class="to ? 'justify-between' : 'justify-end'">
         <router-link
           v-if="to"
           :to="to"

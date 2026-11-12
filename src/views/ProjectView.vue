@@ -75,7 +75,7 @@ const restCell = (index, total) => {
   return [tablet, spanClass[span]].filter(Boolean).join(' ')
 }
 
-const restSize = (index, total) => (bentoSpans(total)[index] >= 4 ? 'wide' : 'tile')
+const restSize = () => 'tile'
 
 watch([query, language], () => {
   const next = {}
@@ -183,7 +183,11 @@ onMounted(async () => {
       class="text-neutral-600 dark:text-neutral-300"
     >{{ t('projects.none') }}</p>
 
-    <section v-if="visibleFeatured.length" class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+    <section
+      v-if="visibleFeatured.length"
+      class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-6"
+      :class="visibleFeatured.length >= 3 ? 'lg:h-[40rem] lg:grid-rows-2' : ''"
+    >
       <projectCard
         v-for="(repo, index) in visibleFeatured"
         :key="repo.name"
@@ -221,7 +225,7 @@ onMounted(async () => {
           :homepage="repo.homepage"
           :html_url="repo.html_url"
           :topics="repo.topics"
-          :size="restSize(index, visibleRest.length)"
+          :size="restSize()"
         />
       </div>
       <div v-else-if="!filtering" class="surface mx-auto max-w-xl px-6 py-10 text-center">
