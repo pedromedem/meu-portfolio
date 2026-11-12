@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { bentoSpans, filterCatalog, languageLabel, languagesIn } from './catalog'
+import { bentoLayout, filterCatalog, languageLabel, languagesIn } from './catalog'
 import { mailHref } from './mail'
 import { findFeatured, projectPath } from '../content/projects'
 import { screenshotFor } from './url'
@@ -28,22 +28,14 @@ describe('filterCatalog', () => {
   })
 })
 
-describe('bentoSpans', () => {
-  it('fills each row of the project grid', () => {
-    expect(bentoSpans(0)).toEqual([])
-    expect(bentoSpans(1)).toEqual([6])
-    expect(bentoSpans(2)).toEqual([3, 3])
-    expect(bentoSpans(3)).toEqual([4, 2, 6])
-    expect(bentoSpans(4)).toEqual([4, 2, 2, 4])
-    for (const total of [3, 4, 5, 7]) {
-      const spans = bentoSpans(total)
-      let used = 0
-      for (const span of spans) {
-        expect(used + span).toBeLessThanOrEqual(6)
-        used = (used + span) % 6
-      }
-      expect(used).toBe(0)
-    }
+describe('bentoLayout', () => {
+  it('keeps one hero and fills every row of four', () => {
+    expect(bentoLayout(0)).toEqual([])
+    expect(bentoLayout(1)).toEqual([{ span: 4, rows: 2, role: 'hero' }])
+    expect(bentoLayout(3)[0]).toEqual({ span: 2, rows: 2, role: 'hero' })
+    expect(bentoLayout(3).slice(1).every((item) => item.role === 'cell')).toBe(true)
+    expect(bentoLayout(7).filter((item) => item.role === 'hero')).toHaveLength(1)
+    expect(bentoLayout(7).map((item) => item.span)).toEqual([2, 2, 2, 2, 2, 2, 2])
   })
 })
 

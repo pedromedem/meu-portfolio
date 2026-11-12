@@ -48,22 +48,27 @@ export function languagesIn(projects) {
     .map(([id, count]) => ({ id, label: languageLabel(id), count }))
 }
 
-const bentoPattern = [4, 2, 2, 4]
-
-export function bentoSpans(total) {
+export function bentoLayout(total) {
   const count = Number(total) || 0
   if (count <= 0) return []
-  if (count === 1) return [6]
-  if (count === 2) return [3, 3]
-
-  const spans = []
-  let used = 0
-  for (let index = 0; index < count; index += 1) {
-    let span = bentoPattern[index % bentoPattern.length]
-    if (used + span > 6) span = 6 - used
-    if (index === count - 1 && used + span < 6) span = 6 - used
-    spans.push(span)
-    used = (used + span) % 6
+  if (count === 1) return [{ span: 4, rows: 2, role: 'hero' }]
+  if (count === 2) {
+    return [
+      { span: 2, rows: 1, role: 'cell' },
+      { span: 2, rows: 1, role: 'cell' },
+    ]
   }
-  return spans
+
+  const items = [
+    { span: 2, rows: 2, role: 'hero' },
+    { span: 2, rows: 1, role: 'cell' },
+    { span: 2, rows: 1, role: 'cell' },
+  ]
+  const rest = count - 3
+  for (let index = 0; index < rest; index += 1) {
+    const last = index === rest - 1
+    const atRowStart = index % 2 === 0
+    items.push({ span: last && atRowStart ? 4 : 2, rows: 1, role: 'cell' })
+  }
+  return items
 }
