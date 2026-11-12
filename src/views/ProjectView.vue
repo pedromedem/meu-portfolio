@@ -5,7 +5,7 @@ import projectCard from '../components/projectCard.vue'
 import skeleton from '../components/skeleton.vue'
 import { featured, featuredNames, projectPath } from '../content/projects'
 import { useI18n } from '../i18n'
-import { filterCatalog, languagesIn } from '../lib/catalog'
+import { bentoSpans, filterCatalog, languagesIn } from '../lib/catalog'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -48,6 +48,34 @@ const clearFilters = () => {
 const pickLanguage = (id) => {
   language.value = language.value === id ? '' : id
 }
+
+const spanClass = {
+  2: 'lg:col-span-2',
+  3: 'lg:col-span-3',
+  4: 'lg:col-span-4',
+  6: 'lg:col-span-6',
+}
+
+const featuredCell = (index, total) => {
+  if (total <= 1) return 'md:col-span-2 lg:col-span-6'
+  if (total === 2) return 'lg:col-span-3'
+  if (index === 0) return 'md:col-span-2 lg:col-span-4 lg:row-span-2'
+  return 'lg:col-span-2'
+}
+
+const featuredSize = (index, total) => {
+  if (total >= 3 && index === 0) return 'hero'
+  if (total === 1) return 'wide'
+  return 'tile'
+}
+
+const restCell = (index, total) => {
+  const span = bentoSpans(total)[index]
+  const tablet = span >= 4 ? 'md:col-span-2' : ''
+  return [tablet, spanClass[span]].filter(Boolean).join(' ')
+}
+
+const restSize = (index, total) => (bentoSpans(total)[index] >= 4 ? 'wide' : 'tile')
 
 watch([query, language], () => {
   const next = {}
@@ -155,15 +183,17 @@ onMounted(async () => {
       class="text-neutral-600 dark:text-neutral-300"
     >{{ t('projects.none') }}</p>
 
-    <section v-if="visibleFeatured.length" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <section v-if="visibleFeatured.length" class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
       <projectCard
-        v-for="repo in visibleFeatured"
+        v-for="(repo, index) in visibleFeatured"
         :key="repo.name"
+        :class="featuredCell(index, visibleFeatured.length)"
         :name="repo.name"
         :language="repo.language"
         :homepage="repo.homepage"
         :html_url="repo.html_url"
         :topics="repo.topics"
+        :size="featuredSize(index, visibleFeatured.length)"
         :to="{ path: projectPath(repo.name), query: listQuery }"
       />
     </section>
@@ -174,21 +204,24 @@ onMounted(async () => {
       <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">
         <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
       </div>
-      <div v-else-if="state.loading" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        <skeleton />
-        <skeleton />
-        <skeleton />
+      <div v-else-if="state.loading" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+        <skeleton class="md:col-span-2 lg:col-span-4" />
+        <skeleton class="lg:col-span-2" />
+        <skeleton class="lg:col-span-2" />
+        <skeleton class="md:col-span-2 lg:col-span-4" />
       </div>
-      <div v-else-if="visibleRest.length" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <div v-else-if="visibleRest.length" class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
         <projectCard
-          v-for="repo in visibleRest"
+          v-for="(repo, index) in visibleRest"
           :key="repo.id"
+          :class="restCell(index, visibleRest.length)"
           :name="repo.name"
           :description="repo.description"
           :language="repo.language"
           :homepage="repo.homepage"
           :html_url="repo.html_url"
           :topics="repo.topics"
+          :size="restSize(index, visibleRest.length)"
         />
       </div>
       <div v-else-if="!filtering" class="surface mx-auto max-w-xl px-6 py-10 text-center">

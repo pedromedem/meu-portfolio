@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { filterCatalog, languageLabel, languagesIn } from './catalog'
+import { bentoSpans, filterCatalog, languageLabel, languagesIn } from './catalog'
 import { mailHref } from './mail'
 import { findFeatured, projectPath } from '../content/projects'
 import { screenshotFor } from './url'
@@ -25,6 +25,25 @@ describe('filterCatalog', () => {
       { id: 'vue', label: 'Vue', count: 1 },
     ])
     expect(languageLabel('CSS')).toBe('CSS')
+  })
+})
+
+describe('bentoSpans', () => {
+  it('fills each row of the project grid', () => {
+    expect(bentoSpans(0)).toEqual([])
+    expect(bentoSpans(1)).toEqual([6])
+    expect(bentoSpans(2)).toEqual([3, 3])
+    expect(bentoSpans(3)).toEqual([4, 2, 6])
+    expect(bentoSpans(4)).toEqual([4, 2, 2, 4])
+    for (const total of [3, 4, 5, 7]) {
+      const spans = bentoSpans(total)
+      let used = 0
+      for (const span of spans) {
+        expect(used + span).toBeLessThanOrEqual(6)
+        used = (used + span) % 6
+      }
+      expect(used).toBe(0)
+    }
   })
 })
 

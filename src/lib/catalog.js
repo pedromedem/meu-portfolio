@@ -47,3 +47,23 @@ export function languagesIn(projects) {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([id, count]) => ({ id, label: languageLabel(id), count }))
 }
+
+const bentoPattern = [4, 2, 2, 4]
+
+export function bentoSpans(total) {
+  const count = Number(total) || 0
+  if (count <= 0) return []
+  if (count === 1) return [6]
+  if (count === 2) return [3, 3]
+
+  const spans = []
+  let used = 0
+  for (let index = 0; index < count; index += 1) {
+    let span = bentoPattern[index % bentoPattern.length]
+    if (used + span > 6) span = 6 - used
+    if (index === count - 1 && used + span < 6) span = 6 - used
+    spans.push(span)
+    used = (used + span) % 6
+  }
+  return spans
+}
