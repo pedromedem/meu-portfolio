@@ -53,6 +53,7 @@ const label = computed(() => `${title.value}. ${props.language || ''}`.trim())
     v-else
     :id="name"
     class="project-tile"
+    :class="isHero ? 'project-tile--hero' : ''"
     :href="href || undefined"
     :target="href ? '_blank' : undefined"
     :rel="href ? 'noopener noreferrer' : undefined"
@@ -65,6 +66,7 @@ const label = computed(() => `${title.value}. ${props.language || ''}`.trim())
     <span class="project-tile__copy">
       <span v-if="language" class="project-tile__lang">{{ language }}</span>
       <span class="project-tile__title">{{ title }}</span>
+      <span v-if="isHero && note" class="project-tile__note">{{ note }}</span>
     </span>
   </a>
 </template>

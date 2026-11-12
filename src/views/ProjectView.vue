@@ -191,7 +191,7 @@ onMounted(async () => {
     </section>
 
     <p v-if="state.erro" class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
-    <p v-else-if="!state.loading && !visible.length" class="text-neutral-600 dark:text-neutral-300">{{ t('projects.empty') }}</p>
+    <p v-else-if="!state.loading && !filtering && !visible.length" class="text-neutral-600 dark:text-neutral-300">{{ t('projects.empty') }}</p>
   </main>
 </template>
 
