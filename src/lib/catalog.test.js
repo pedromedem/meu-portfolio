@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { filterCatalog, languageLabel, languagesIn } from './catalog'
+import { bentoLayout, filterCatalog, languageLabel, languagesIn } from './catalog'
 import { mailHref } from './mail'
 import { findFeatured, projectPath } from '../content/projects'
 import { screenshotFor } from './url'
@@ -25,6 +25,17 @@ describe('filterCatalog', () => {
       { id: 'vue', label: 'Vue', count: 1 },
     ])
     expect(languageLabel('CSS')).toBe('CSS')
+  })
+})
+
+describe('bentoLayout', () => {
+  it('keeps one hero and fills every row of four', () => {
+    expect(bentoLayout(0)).toEqual([])
+    expect(bentoLayout(1)).toEqual([{ span: 4, rows: 2, role: 'hero' }])
+    expect(bentoLayout(3)[0]).toEqual({ span: 2, rows: 2, role: 'hero' })
+    expect(bentoLayout(3).slice(1).every((item) => item.role === 'cell')).toBe(true)
+    expect(bentoLayout(7).filter((item) => item.role === 'hero')).toHaveLength(1)
+    expect(bentoLayout(7).map((item) => item.span)).toEqual([2, 2, 2, 2, 2, 2, 2])
   })
 })
 

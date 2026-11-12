@@ -5,7 +5,7 @@ import projectCard from '../components/projectCard.vue'
 import skeleton from '../components/skeleton.vue'
 import { featured, featuredNames, projectPath } from '../content/projects'
 import { useI18n } from '../i18n'
-import { filterCatalog, languagesIn } from '../lib/catalog'
+import { bentoLayout, filterCatalog, languagesIn } from '../lib/catalog'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -47,6 +47,19 @@ const clearFilters = () => {
 
 const pickLanguage = (id) => {
   language.value = language.value === id ? '' : id
+}
+
+const layout = computed(() => bentoLayout(visible.value.length))
+
+const cellClass = (index) => {
+  const item = layout.value[index]
+  if (!item) return ''
+  const parts = []
+  if (item.role === 'hero') parts.push('md:col-span-2')
+  if (item.span === 2) parts.push('lg:col-span-2')
+  if (item.span === 4) parts.push('lg:col-span-4')
+  if (item.rows === 2) parts.push('lg:row-span-2')
+  return parts.join(' ')
 }
 
 watch([query, language], () => {
@@ -151,49 +164,56 @@ onMounted(async () => {
     </div>
 
     <p
-      v-if="!state.loading && !state.erro && filtering && !visibleFeatured.length && !visibleRest.length"
+      v-if="!state.loading && !state.erro && filtering && !visible.length"
       class="text-neutral-600 dark:text-neutral-300"
     >{{ t('projects.none') }}</p>
 
-    <section v-if="visibleFeatured.length" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <section v-if="visible.length || state.loading" class="project-bento">
       <projectCard
-        v-for="repo in visibleFeatured"
+        v-for="(repo, index) in visible"
         :key="repo.name"
+        :class="cellClass(index)"
         :name="repo.name"
+        :description="repo.description"
         :language="repo.language"
         :homepage="repo.homepage"
         :html_url="repo.html_url"
         :topics="repo.topics"
-        :to="{ path: projectPath(repo.name), query: listQuery }"
+        :size="layout[index]?.role || 'cell'"
+        :to="featuredNames.has(repo.name) ? { path: projectPath(repo.name), query: listQuery } : ''"
       />
+      <template v-if="state.loading">
+        <skeleton />
+        <skeleton />
+        <skeleton />
+        <skeleton />
+      </template>
     </section>
 
-    <section v-if="state.erro || state.loading || visibleRest.length || !filtering" class="flex flex-col gap-6 md:gap-8">
-      <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">{{ t('projects.more') }}</h2>
-
-      <div v-if="state.erro" class="surface mx-auto max-w-xl px-6 py-10 text-center">
-        <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
-      </div>
-      <div v-else-if="state.loading" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        <skeleton />
-        <skeleton />
-        <skeleton />
-      </div>
-      <div v-else-if="visibleRest.length" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        <projectCard
-          v-for="repo in visibleRest"
-          :key="repo.id"
-          :name="repo.name"
-          :description="repo.description"
-          :language="repo.language"
-          :homepage="repo.homepage"
-          :html_url="repo.html_url"
-          :topics="repo.topics"
-        />
-      </div>
-      <div v-else-if="!filtering" class="surface mx-auto max-w-xl px-6 py-10 text-center">
-        <p class="text-neutral-600 dark:text-neutral-300">{{ t('projects.empty') }}</p>
-      </div>
-    </section>
+    <p v-if="state.erro" class="text-neutral-600 dark:text-neutral-300">{{ t('projects.error') }}</p>
+    <p v-else-if="!state.loading && !filtering && !visible.length" class="text-neutral-600 dark:text-neutral-300">{{ t('projects.empty') }}</p>
   </main>
 </template>
+
+<style scoped>
+.project-bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .project-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-bento {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 210px;
+    gap: 16px;
+  }
+}
+</style>

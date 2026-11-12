@@ -47,3 +47,28 @@ export function languagesIn(projects) {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([id, count]) => ({ id, label: languageLabel(id), count }))
 }
+
+export function bentoLayout(total) {
+  const count = Number(total) || 0
+  if (count <= 0) return []
+  if (count === 1) return [{ span: 4, rows: 2, role: 'hero' }]
+  if (count === 2) {
+    return [
+      { span: 2, rows: 1, role: 'cell' },
+      { span: 2, rows: 1, role: 'cell' },
+    ]
+  }
+
+  const items = [
+    { span: 2, rows: 2, role: 'hero' },
+    { span: 2, rows: 1, role: 'cell' },
+    { span: 2, rows: 1, role: 'cell' },
+  ]
+  const rest = count - 3
+  for (let index = 0; index < rest; index += 1) {
+    const last = index === rest - 1
+    const atRowStart = index % 2 === 0
+    items.push({ span: last && atRowStart ? 4 : 2, rows: 1, role: 'cell' })
+  }
+  return items
+}

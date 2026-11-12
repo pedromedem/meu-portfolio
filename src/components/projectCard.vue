@@ -1,11 +1,10 @@
 <script setup>
 import { computed, ref } from 'vue'
-import GithubIcon from './GithubIcon.vue'
 import { useI18n } from '../i18n'
 import { projectCopy } from '../content/projects'
 import { safeHttpUrl, screenshotFor } from '../lib/url'
 
-const { locale, t } = useI18n()
+const { locale } = useI18n()
 
 const props = defineProps({
   name: { type: String, default: '' },
@@ -15,6 +14,7 @@ const props = defineProps({
   homepage: { type: String, default: '' },
   topics: { type: Array, default: () => [] },
   to: { type: [String, Object], default: '' },
+  size: { type: String, default: 'cell' },
 })
 
 const imageFailed = ref(false)
@@ -23,90 +23,152 @@ const liveUrl = computed(() => safeHttpUrl(props.homepage))
 const repoUrl = computed(() => safeHttpUrl(props.html_url))
 const title = computed(() => String(props.name || '').replace(/[-_]/g, ' '))
 const initial = computed(() => title.value.charAt(0).toUpperCase())
-const topicList = computed(() => (Array.isArray(props.topics) ? props.topics : []))
-const note = computed(() => projectCopy(props.name, locale.value))
-const screenshot = computed(() => screenshotFor(props.homepage))
+const note = computed(() => projectCopy(props.name, locale.value) || props.description)
+const screenshot = computed(() => (imageFailed.value ? '' : screenshotFor(props.homepage)))
+const isHero = computed(() => props.size === 'hero')
+const href = computed(() => (props.to ? '' : liveUrl.value || repoUrl.value))
+const label = computed(() => `${title.value}. ${props.language || ''}`.trim())
 </script>
 
 <template>
-  <article :id="name" class="flex h-full flex-col overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_24px_50px_-36px_rgba(40,10,60,0.45)] transition duration-300 hover:-translate-y-1 dark:border-white/15 dark:bg-[#2a2a2a] dark:shadow-[0_24px_50px_-32px_rgba(0,0,0,0.85)]">
-    <div class="relative aspect-[16/10] overflow-hidden bg-neutral-200 dark:bg-neutral-900">
-      <div class="absolute inset-0 bg-gradient-to-br from-pink-500 via-violet-600 to-neutral-950" />
-      <img
-        v-if="screenshot && !imageFailed"
-        class="absolute inset-0 h-full w-full object-cover"
-        :src="screenshot"
-        alt=""
-        @error="imageFailed = true"
-      />
-      <div v-if="!screenshot || imageFailed" class="absolute inset-0 grid place-items-center">
-        <span class="text-6xl font-black text-white/80">{{ initial }}</span>
-      </div>
-      <a
-        v-if="liveUrl"
-        class="absolute inset-0"
-        :href="liveUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        :aria-label="`${t('card.open')} ${title}`"
-      />
-    </div>
-
-    <div class="flex flex-1 flex-col px-5 pb-5 pt-4">
-      <div class="flex items-start justify-between gap-3">
-        <h2 class="text-lg font-bold capitalize tracking-tight text-neutral-950 dark:text-neutral-50">{{ title }}</h2>
-        <span
-          v-if="language"
-          class="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-600 dark:bg-white/10 dark:text-neutral-200"
-        >{{ language }}</span>
-      </div>
-      <p v-if="note" class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-        {{ note }}
-      </p>
-      <p v-else-if="description" class="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-        {{ description }}
-      </p>
-      <div v-if="topicList.length" class="mt-3 flex flex-wrap gap-1.5">
-        <span
-          v-for="topic in topicList"
-          :key="topic"
-          class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium capitalize text-neutral-700 dark:bg-white/10 dark:text-neutral-200"
-        >{{ String(topic).replaceAll('-', ' ') }}</span>
-      </div>
-      <div class="mt-auto flex items-center gap-2 pt-5" :class="to ? 'justify-between' : 'justify-end'">
-        <router-link
-          v-if="to"
-          :to="to"
-          class="text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
-        >{{ t('projects.details') }}</router-link>
-        <div class="flex gap-2">
-        <a
-          v-if="repoUrl"
-          class="icon-btn"
-          :href="repoUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="t('card.repo')"
-        >
-          <GithubIcon :size="18" />
-        </a>
-        <a
-          v-if="liveUrl"
-          class="icon-btn"
-          :href="liveUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="t('card.live')"
-        >
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-            stroke-linejoin="round" height="18" width="18" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-        </a>
-        </div>
-      </div>
-    </div>
-  </article>
+  <router-link
+    v-if="to"
+    :id="name"
+    :to="to"
+    class="project-tile"
+    :class="isHero ? 'project-tile--hero' : ''"
+    :aria-label="label"
+  >
+    <span class="project-tile__media" aria-hidden="true">
+      <span v-if="!screenshot" class="project-tile__letter">{{ initial }}</span>
+      <img v-else :src="screenshot" alt="" @error="imageFailed = true" />
+    </span>
+    <span class="project-tile__copy">
+      <span v-if="language" class="project-tile__lang">{{ language }}</span>
+      <span class="project-tile__title">{{ title }}</span>
+      <span v-if="isHero && note" class="project-tile__note">{{ note }}</span>
+    </span>
+  </router-link>
+  <a
+    v-else
+    :id="name"
+    class="project-tile"
+    :class="isHero ? 'project-tile--hero' : ''"
+    :href="href || undefined"
+    :target="href ? '_blank' : undefined"
+    :rel="href ? 'noopener noreferrer' : undefined"
+    :aria-label="label"
+  >
+    <span class="project-tile__media" aria-hidden="true">
+      <span v-if="!screenshot" class="project-tile__letter">{{ initial }}</span>
+      <img v-else :src="screenshot" alt="" @error="imageFailed = true" />
+    </span>
+    <span class="project-tile__copy">
+      <span v-if="language" class="project-tile__lang">{{ language }}</span>
+      <span class="project-tile__title">{{ title }}</span>
+      <span v-if="isHero && note" class="project-tile__note">{{ note }}</span>
+    </span>
+  </a>
 </template>
+
+<style scoped>
+.project-tile {
+  position: relative;
+  display: flex;
+  min-height: 220px;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #171717;
+  color: #fafaf9;
+  isolation: isolate;
+}
+
+.project-tile:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+.project-tile__media,
+.project-tile__media img,
+.project-tile__letter {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.project-tile__media {
+  background: linear-gradient(145deg, #ec4899, #7c3aed 55%, #171717);
+}
+
+.project-tile__media img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.project-tile__letter {
+  display: grid;
+  place-items: center;
+  font-size: 5.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.project-tile__copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: auto;
+  padding: 1.15rem 1.25rem 1.2rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.28) 62%, transparent 100%);
+}
+
+.project-tile__lang {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.project-tile__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.project-tile--hero {
+  min-height: 320px;
+}
+
+.project-tile--hero .project-tile__title {
+  font-size: 1.85rem;
+}
+
+.project-tile__note {
+  max-width: 36rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .project-tile,
+  .project-tile--hero {
+    min-height: 0;
+    height: 100%;
+  }
+}
+</style>
