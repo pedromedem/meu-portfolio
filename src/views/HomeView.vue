@@ -1,8 +1,10 @@
 <script setup>
 import { onBeforeUnmount, ref } from 'vue'
+import { featured, projectCopy, projectPath } from '../content/projects'
 import { useI18n } from '../i18n'
+import { screenshotFor } from '../lib/url'
 
-const { t } = useI18n()
+const { locale, t } = useI18n()
 
 const card = ref(null)
 let frame = 0
@@ -46,8 +48,9 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 </script>
 
 <template>
-  <main class="stage">
-    <div class="scene w-full max-w-3xl">
+  <main class="stage flex-col justify-start">
+    <div class="my-auto flex w-full max-w-3xl flex-col items-center gap-8">
+    <div class="scene w-full">
       <article
         ref="card"
         class="profile-card"
@@ -86,12 +89,33 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
               JavaScript · Vue · Tailwind
             </p>
             <div class="mt-6 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              <router-link to="/about" class="btn-primary">{{ t('home.enjoy') }}</router-link>
-              <router-link to="/projects" class="btn-ghost">{{ t('nav.projects') }}</router-link>
+              <router-link to="/projects" class="btn-primary">{{ t('nav.projects') }}</router-link>
+              <router-link to="/about" class="btn-ghost">{{ t('home.enjoy') }}</router-link>
+              <a class="btn-ghost" href="mailto:ssilvalucas2004@gmail.com">{{ t('home.write') }}</a>
             </div>
           </div>
         </div>
       </article>
+    </div>
+    <section class="w-full" :aria-label="t('home.work')">
+      <p class="eyebrow text-center md:text-left">{{ t('home.work') }}</p>
+      <ul class="mt-4 grid gap-3 sm:grid-cols-3">
+        <li v-for="project in featured" :key="project.name">
+          <router-link class="home-work" :to="projectPath(project.name)">
+            <img
+              v-if="screenshotFor(project.homepage)"
+              class="h-14 w-20 shrink-0 rounded-xl object-cover"
+              :src="screenshotFor(project.homepage)"
+              alt=""
+            />
+            <span class="min-w-0">
+              <span class="block text-sm font-bold capitalize text-neutral-950 dark:text-neutral-50">{{ project.name.replaceAll('-', ' ') }}</span>
+              <span class="mt-1 line-clamp-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">{{ projectCopy(project.name, locale) }}</span>
+            </span>
+          </router-link>
+        </li>
+      </ul>
+    </section>
     </div>
   </main>
 </template>
@@ -224,5 +248,26 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
 .dark .avatar-ring__photo {
   border-color: #171717;
+}
+
+.home-work {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.75rem;
+}
+
+.home-work:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+.dark .home-work {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(23, 23, 23, 0.72);
 }
 </style>

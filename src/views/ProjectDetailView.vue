@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { findFeatured, projectCopy } from '../content/projects'
+import { featuredNeighbors, findFeatured, projectCopy, projectPath } from '../content/projects'
 import { useI18n } from '../i18n'
 import { safeHttpUrl, screenshotFor } from '../lib/url'
 
@@ -10,6 +10,7 @@ const route = useRoute()
 const imageFailed = ref(false)
 
 const project = computed(() => findFeatured(route.params.slug))
+const neighbors = computed(() => featuredNeighbors(route.params.slug))
 const title = computed(() => (project.value ? project.value.name.replace(/[-_]/g, ' ') : ''))
 const note = computed(() => (project.value ? projectCopy(project.value.name, locale.value) : ''))
 const live = computed(() => safeHttpUrl(project.value?.homepage))
@@ -60,6 +61,25 @@ watch(() => route.params.slug, () => {
     <ul v-if="project.topics?.length" class="flex flex-wrap gap-2">
       <li v-for="topic in project.topics" :key="topic" class="rounded-full border border-black/10 px-3 py-1.5 text-sm font-medium capitalize text-neutral-700 dark:border-white/20 dark:text-neutral-200">{{ String(topic).replaceAll('-', ' ') }}</li>
     </ul>
+
+    <nav class="grid gap-3 sm:grid-cols-2" :aria-label="t('projects.moreWork')">
+      <router-link
+        v-if="neighbors.previous"
+        class="rounded-2xl border border-black/10 px-4 py-3 dark:border-white/15"
+        :to="{ path: projectPath(neighbors.previous.name), query: route.query }"
+      >
+        <span class="text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400">{{ t('projects.previous') }}</span>
+        <span class="mt-1 block font-bold capitalize text-neutral-950 dark:text-neutral-50">{{ neighbors.previous.name.replaceAll('-', ' ') }}</span>
+      </router-link>
+      <router-link
+        v-if="neighbors.next"
+        class="rounded-2xl border border-black/10 px-4 py-3 sm:text-right dark:border-white/15"
+        :to="{ path: projectPath(neighbors.next.name), query: route.query }"
+      >
+        <span class="text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400">{{ t('projects.next') }}</span>
+        <span class="mt-1 block font-bold capitalize text-neutral-950 dark:text-neutral-50">{{ neighbors.next.name.replaceAll('-', ' ') }}</span>
+      </router-link>
+    </nav>
   </main>
 
   <main v-else class="stage">

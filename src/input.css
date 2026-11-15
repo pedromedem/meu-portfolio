@@ -145,6 +145,30 @@ article[id] {
   scroll-margin-top: 7rem;
 }
 
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+  z-index: 60;
+  transform: translateY(-150%);
+  border-radius: 9999px;
+  background: #171717;
+  color: #fafaf9;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: none;
+  outline: 2px solid #8b5cf6;
+  outline-offset: 3px;
+}
+
+#content:focus {
+  outline: none;
+}
+
 .btn-primary:focus-visible,
 .btn-ghost:focus-visible,
 .icon-btn:focus-visible,
