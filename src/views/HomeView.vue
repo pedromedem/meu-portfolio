@@ -88,10 +88,10 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
             <p class="mt-4 text-sm font-medium tracking-wide text-neutral-500 dark:text-neutral-400">
               JavaScript · Vue · Tailwind
             </p>
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-              <router-link to="/projects" class="btn-primary">{{ t('nav.projects') }}</router-link>
-              <router-link to="/about" class="btn-ghost">{{ t('home.enjoy') }}</router-link>
-              <a class="btn-ghost" href="mailto:ssilvalucas2004@gmail.com">{{ t('home.write') }}</a>
+            <div class="mt-6 grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-start">
+              <router-link to="/projects" class="btn-primary px-2 text-xs sm:px-5 sm:text-sm">{{ t('nav.projects') }}</router-link>
+              <router-link to="/about" class="btn-ghost px-2 text-xs sm:px-5 sm:text-sm">{{ t('home.enjoy') }}</router-link>
+              <a class="btn-ghost px-2 text-xs sm:px-5 sm:text-sm" href="mailto:ssilvalucas2004@gmail.com">{{ t('home.write') }}</a>
             </div>
           </div>
         </div>
