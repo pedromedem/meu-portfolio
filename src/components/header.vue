@@ -71,9 +71,9 @@ onBeforeUnmount(() => {
 <template>
   <div class="flex w-full justify-center">
     <div class="nav-pill flex h-auto max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-3xl border border-black/10 bg-white/70 px-2.5 py-1.5 text-[0.8rem] font-medium leading-none text-neutral-800 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/50 dark:text-neutral-100 sm:gap-4 sm:rounded-full sm:px-4 sm:py-2.5 sm:text-sm">
-      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" to="/">{{ t('nav.home') }}</router-link>
-      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" to="/about">{{ t('nav.about') }}</router-link>
-      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" :class="{ 'is-current': projectsCurrent }" to="/projects">{{ t('nav.projects') }}</router-link>
+      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" to="/" :aria-current="route.path === '/' ? 'page' : undefined">{{ t('nav.home') }}</router-link>
+      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" to="/about" :aria-current="route.path === '/about' ? 'page' : undefined">{{ t('nav.about') }}</router-link>
+      <router-link class="element relative whitespace-nowrap after:bg-[#333] dark:after:bg-neutral-50" :class="{ 'is-current': projectsCurrent }" to="/projects" :aria-current="projectsCurrent ? 'page' : undefined">{{ t('nav.projects') }}</router-link>
       <div class="flex shrink-0 items-center gap-1">
       <div class="lang" role="group" :aria-label="t('lang.label')">
         <button type="button" :aria-pressed="locale === 'en'" :aria-label="t('lang.en')" @click="setLocale('en')">

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { featured, featuredNames, projectCopy } from './projects'
+import { featured, featuredNames, featuredNeighbors, projectCopy } from './projects'
 import { messages } from '../i18n'
 import { safeHttpUrl } from '../lib/url'
 
@@ -10,6 +10,12 @@ describe('project copy', () => {
       expect(projectCopy(project.name, 'en').length).toBeGreaterThan(20)
       expect(projectCopy(project.name, 'pt')).not.toBe(projectCopy(project.name, 'en'))
     }
+  })
+
+  it('links each featured project to the ones beside it', () => {
+    expect(featuredNeighbors('pomodoro').previous.name).toBe('link-tree')
+    expect(featuredNeighbors('pomodoro').next.name).toBe('Github-card')
+    expect(featuredNeighbors('missing').next).toBeNull()
   })
 
   it('falls back to English and then to an empty string', () => {

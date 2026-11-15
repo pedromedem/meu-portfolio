@@ -60,6 +60,15 @@ export function findFeatured(slug) {
   return featured.find((project) => project.name.toLowerCase() === key) || null
 }
 
+export function featuredNeighbors(slug) {
+  const index = featured.findIndex((project) => project.name.toLowerCase() === String(slug || '').toLowerCase())
+  if (index < 0) return { previous: null, next: null }
+  return {
+    previous: featured[(index - 1 + featured.length) % featured.length],
+    next: featured[(index + 1) % featured.length],
+  }
+}
+
 export function projectCopy(name, locale) {
   const entry = copy[name]
   if (!entry) return ''

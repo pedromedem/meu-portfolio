@@ -1,6 +1,5 @@
 <script setup>
 import { computed, ref } from 'vue'
-import GithubIcon from './GithubIcon.vue'
 import { useI18n } from '../i18n'
 import { projectCopy } from '../content/projects'
 import { safeHttpUrl, screenshotFor } from '../lib/url'
@@ -79,32 +78,21 @@ const screenshot = computed(() => screenshotFor(props.homepage))
           :to="to"
           class="text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
         >{{ t('projects.details') }}</router-link>
-        <div class="flex gap-2">
-        <a
-          v-if="repoUrl"
-          class="icon-btn"
-          :href="repoUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="t('card.repo')"
-        >
-          <GithubIcon :size="18" />
-        </a>
+        <div class="flex flex-wrap justify-end gap-2">
         <a
           v-if="liveUrl"
-          class="icon-btn"
+          class="text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
           :href="liveUrl"
           target="_blank"
           rel="noopener noreferrer"
-          :aria-label="t('card.live')"
-        >
-          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
-            stroke-linejoin="round" height="18" width="18" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-        </a>
+        >{{ t('card.site') }}</a>
+        <a
+          v-if="repoUrl"
+          class="text-sm font-bold text-neutral-950 underline decoration-pink-400/70 underline-offset-4 dark:text-neutral-50"
+          :href="repoUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ t('card.code') }}</a>
         </div>
       </div>
     </div>

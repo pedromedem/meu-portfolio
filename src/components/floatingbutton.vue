@@ -7,7 +7,8 @@ const { t } = useI18n()
 const scroll = ref(false)
 
 const scrolling = () => {
-  scroll.value = document.documentElement.scrollTop > 20 || document.body.scrollTop > 20
+  const top = document.documentElement.scrollTop || document.body.scrollTop
+  scroll.value = top > window.innerHeight * 0.75
 }
 
 const toTop = () => {
@@ -31,7 +32,7 @@ onBeforeUnmount(() => {
     :aria-label="t('top')"
     :aria-hidden="scroll ? undefined : true"
     :tabindex="scroll ? 0 : -1"
-    class="icon-btn fixed bottom-10 right-6 z-40 h-12 w-12 bg-white/80 shadow-[0_16px_40px_-24px_rgba(40,10,60,0.8)] backdrop-blur-md transition duration-500 ease-in-out dark:bg-neutral-900/80 md:right-10"
+    class="icon-btn fixed bottom-6 right-4 z-40 h-12 w-12 bg-white/80 shadow-[0_16px_40px_-24px_rgba(40,10,60,0.8)] backdrop-blur-md transition duration-500 ease-in-out dark:bg-neutral-900/80 sm:bottom-10 sm:right-8"
     :class="scroll ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'"
     @click="toTop"
   >
