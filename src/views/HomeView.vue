@@ -64,13 +64,15 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
 
         <div class="relative z-[1] flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-11">
           <div class="avatar-ring shrink-0">
-            <img
-              class="avatar-ring__photo"
-              src="https://avatars.githubusercontent.com/u/103083001?v=4"
-              :alt="t('home.portrait')"
-              width="156"
-              height="156"
-            />
+            <div class="avatar-ring__face">
+              <img
+                class="avatar-ring__photo"
+                src="/portrait.png"
+                :alt="t('home.portrait')"
+                width="156"
+                height="156"
+              />
+            </div>
           </div>
 
           <div class="flex min-w-0 flex-col items-center text-center md:items-start md:text-left">
@@ -187,13 +189,23 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   box-shadow: 0 18px 40px -22px rgba(139, 92, 246, 0.9);
 }
 
-.avatar-ring__photo {
+.avatar-ring__face {
   width: 100%;
   height: 100%;
+  overflow: hidden;
   border-radius: 9999px;
+  background: #f6f4f1;
+  transform: translateZ(0);
+  -webkit-mask-image: radial-gradient(circle, #000 99%, transparent 100%);
+  mask-image: radial-gradient(circle, #000 99%, transparent 100%);
+}
+
+.avatar-ring__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background: #171717;
-  border: 3px solid #fafaf9;
+  background: transparent;
 }
 
 @keyframes spin-ring {
@@ -246,8 +258,8 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
   background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.14), transparent 42%);
 }
 
-.dark .avatar-ring__photo {
-  border-color: #171717;
+.dark .avatar-ring__face {
+  background: #1a1a1a;
 }
 
 .home-work {
